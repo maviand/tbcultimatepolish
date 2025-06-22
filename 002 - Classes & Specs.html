@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Class & Specialization Balance - TBC Polish Addendum</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;800&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --color-background-primary: #110D1F; /* Deep Violet */
+            --color-background-secondary: #221A3A; /* Darker Purple */
+            --color-text-primary: #E0E0FF; /* Lavender White */
+            --color-text-secondary: #A0A0C0; /* Muted Lavender */
+            --color-accent-purple: #9E7BFF; /* Bright Violet */
+            --color-accent-gold: #FFD700; /* Gold */
+            --color-border: #4A3F6D;
+            /* Class Colors */
+            --c-warrior: #C79C6E; --c-paladin: #F58CBA; --c-hunter: #ABD473; --c-rogue: #FFF569;
+            --c-priest: #FFFFFF; --c-shaman: #0070DE; --c-mage: #69CCF0; --c-warlock: #9482C9; --c-druid: #FF7D0A;
+        }
+
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background-color: var(--color-background-primary);
+            color: var(--color-text-primary);
+            background-image: url('https://www.transparenttextures.com/patterns/stardust.png');
+        }
+        
+        .font-header {
+            font-family: 'Cinzel', serif;
+            letter-spacing: 0.05em;
+            text-shadow: 1px 1px 6px rgba(0, 0, 0, 0.6);
+        }
+
+        .card {
+            background-color: var(--color-background-secondary);
+            border: 1px solid var(--color-border);
+            border-radius: 0.5rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+        }
+        
+        .section-header {
+            border-bottom: 2px solid var(--color-accent-purple);
+            padding-bottom: 0.75rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 15px -10px var(--color-accent-purple);
+        }
+
+        .header-icon {
+             width: 3rem; height: 3rem; margin-right: 1rem;
+             filter: drop-shadow(0 0 8px var(--color-accent-purple));
+        }
+
+        .class-select-button {
+             background-color: var(--color-background-secondary);
+             border: 2px solid var(--color-border);
+             transition: all 0.2s ease-in-out;
+             filter: grayscale(50%);
+             opacity: 0.8;
+             position: relative;
+        }
+         .class-select-button:hover {
+            filter: grayscale(0%);
+            opacity: 1;
+            transform: translateY(-4px) scale(1.05);
+            border-color: var(--color-border);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.5);
+        }
+        .class-select-button.active {
+            filter: grayscale(0%);
+            opacity: 1;
+            box-shadow: 0 0 20px var(--class-color, var(--color-accent-purple));
+            border-color: var(--class-color, var(--color-accent-purple));
+            transform: scale(1.1);
+        }
+        .class-select-button.active::after {
+            content: '★';
+            position: absolute;
+            top: -10px;
+            right: -5px;
+            color: var(--color-accent-gold);
+            font-size: 1.5rem;
+            text-shadow: 0 0 8px var(--color-accent-gold);
+        }
+
+
+        .spec-tab-button {
+            padding: 0.5rem 1rem; border-radius: 0.5rem; border: 1px solid transparent;
+            font-weight: 700; color: var(--color-text-primary);
+            background-color: #332855; transition: all 0.2s ease;
+            box-shadow: inset 0 1px 2px rgba(0,0,0,0.4);
+        }
+        .spec-tab-button:hover { background-color: var(--color-border); }
+        .spec-tab-button.active {
+            background-color: var(--class-color, var(--color-accent-purple));
+            color: #111;
+            border-color: var(--class-color, var(--color-accent-purple));
+            text-shadow: 1px 1px 2px rgba(255,255,255,0.3);
+        }
+        .spec-content {
+            background-color: rgba(18, 18, 18, 0.3);
+            border: 1px solid var(--color-border);
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+        }
+        .spec-category-title {
+            font-size: 1.25rem; font-weight: 700; margin-top: 1.5rem; margin-bottom: 0.75rem;
+            color: var(--color-accent-gold); display: flex; align-items: center; gap: 0.75rem;
+            border-bottom: 2px solid var(--color-border); padding-bottom: 0.5rem;
+        }
+        .spec-detail-item { 
+            padding: 1rem;
+            border-left: 4px solid var(--color-border);
+            background-color: rgba(0,0,0,0.1);
+            border-radius: 0 0.25rem 0.25rem 0;
+        }
+        .spec-detail-item:not(:last-child) {
+            margin-bottom: 1rem;
+        }
+        .spec-detail-item .change {
+            font-weight: 600;
+            color: var(--color-text-primary);
+            display: flex;
+            align-items: center;
+        }
+        .spec-detail-item .ability-icon {
+            width: 2rem;
+            height: 2rem;
+            margin-right: 0.75rem;
+            border-radius: 0.25rem;
+            border: 1px solid #555;
+            flex-shrink: 0;
+        }
+         .spec-detail-item .rationale {
+            font-size: 0.875rem;
+            color: var(--color-text-secondary);
+            margin-top: 0.5rem;
+            padding-left: 1rem;
+            border-left: 2px solid #555;
+        }
+        .performance-bar {
+            background-color: #333;
+            border-radius: 0.25rem;
+            overflow: hidden;
+            height: 24px;
+        }
+        .performance-fill {
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: black;
+            font-weight: bold;
+            font-size: 0.8rem;
+            text-shadow: 1px 1px 1px rgba(0,0,0,0.4);
+        }
+        .nerf { background: linear-gradient(90deg, #ff7e75, #ff4d4d); }
+        .buff { background: linear-gradient(90deg, #8aff8a, #43d443); }
+        .neutral { background: linear-gradient(90deg, #a0a0a0, #cccccc); }
+    </style>
+</head>
+<body class="antialiased">
+
+    <main class="container mx-auto px-4 py-12 md:py-16">
+
+        <!-- Header Section -->
+        <section id="vision" class="mb-16 md:mb-24 text-center">
+            <div class="flex items-center justify-center mb-6">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-20 h-20 text-[var(--color-accent-purple)] filter drop-shadow-lg"><path d="M11.25 4.533A9.707 9.707 0 006 3a9.735 9.735 0 00-3.25.555.75.75 0 00-.5.707v1.286a.75.75 0 00.75.75h2.5a.75.75 0 00.75-.75V6.01a7.22 7.22 0 012.25-.48c.32.004.635.02.94.051.306.032.59.076.86.133a.75.75 0 00.57-.912l-.433-1.298a.75.75 0 00-.912-.57zM18 3a9.735 9.735 0 013.25.555.75.75 0 01.5.707v1.286a.75.75 0 01-.75.75h-2.5a.75.75 0 01-.75-.75V6.01A7.22 7.22 0 0012.75 5.53c-.32.004-.635.02.94-.051-.306.032-.59-.076-.86.133a.75.75 0 01-.57-.912l.433-1.298a.75.75 0 01.912-.57zM12 6.375a3.375 3.375 0 100 6.75 3.375 3.375 0 000-6.75zM21 9.333A9.707 9.707 0 0118 10.5a9.735 9.735 0 01-3.25-.555.75.75 0 01-.5-.707V8.026a.75.75 0 01.75-.75h2.5a.75.75 0 01.75.75v1.286a.75.75 0 01-.75.75h-1.258a7.24 7.24 0 00.94-.051.75.75 0 01.707.5l.434 1.298a.75.75 0 01-.57.912zM6 10.5a9.707 9.707 0 01-2.25-1.167.75.75 0 01-.5-.707V7.338a.75.75 0 01.75-.75h2.5a.75.75 0 01.75.75v1.286a.75.75 0 01-.75.75H5.008a7.24 7.24 0 00.94-.051.75.75 0 01.707.5l.434 1.298a.75.75 0 01-.57.912zM12 21.75a9.735 9.735 0 01-3.25-.555.75.75 0 01-.5-.707v-1.286a.75.75 0 01.75-.75h2.5a.75.75 0 01.75.75v.98a7.22 7.22 0 002.25.48c.32-.004-.635-.02.94-.051.306-.032-.59-.076.86-.133a.75.75 0 01.57.912l-.433 1.298a.75.75 0 01-.912.57 9.707 9.707 0 01-2.25 1.167z" /></svg>
+            </div>
+            <h1 class="text-4xl md:text-5xl font-extrabold text-white mb-4 font-header"><span class="text-[var(--color-accent-purple)]">Class & Specialization</span> Balance</h1>
+            <p class="max-w-4xl mx-auto text-lg text-gray-300 leading-relaxed">
+                This section details refinements for all talent specializations, focusing on Quality-of-Life (QoL) improvements, balance tuning, talent tree polish, and optional modern enhancements adapted for TBC. The goal is to preserve class fantasy and TBC's talent framework while making every spec feel viable, engaging, and polished.
+            </p>
+        </section>
+
+        <!-- Class & Spec Section -->
+        <section id="classes" class="mb-16 md:mb-24 scroll-mt-20">
+            <div class="section-header flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="header-icon"><path d="M4.5 6.375a.75.75 0 01.75-.75h13.5a.75.75 0 01.75.75v9a.75.75 0 01-.75.75h-13.5a.75.75 0 01-.75-.75v-9z" /><path fill-rule="evenodd" d="M21 3.75A2.25 2.25 0 0018.75 1.5H5.25A2.25 2.25 0 003 3.75v16.5A2.25 2.25 0 005.25 22.5h13.5A2.25 2.25 0 0021 20.25V3.75zm-1.5 0v16.5a.75.75 0 01-.75.75H5.25a.75.75 0 01-.75-.75V3.75a.75.75 0 01.75-.75h13.5a.75.75 0 01.75.75z" clip-rule="evenodd" /></svg>
+                <h2 class="text-3xl md:text-4xl font-bold font-header"><span class="text-[var(--color-accent-purple)]">Select a Class</span></h2>
+            </div>
+             <div id="class-balance-container" class="card p-6 md:p-8">
+                <div class="grid grid-cols-3 md:grid-cols-5 lg:grid-cols-9 gap-4 mb-8">
+                    <button class="class-select-button p-3 flex flex-col justify-center items-center rounded-lg" data-class="warrior" style="--class-color: var(--c-warrior);">
+                        <img src="https://wow.zamimg.com/images/wow/icons/large/classicon_warrior.jpg" alt="Warrior" class="w-12 h-12 rounded-md">
+                        <span class="text-xs font-bold mt-2">Warrior</span>
+                    </button>
+                    <button class="class-select-button p-3 flex flex-col justify-center items-center rounded-lg" data-class="paladin" style="--class-color: var(--c-paladin);">
+                        <img src="https://wow.zamimg.com/images/wow/icons/large/classicon_paladin.jpg" alt="Paladin" class="w-12 h-12 rounded-md">
+                        <span class="text-xs font-bold mt-2">Paladin</span>
+                    </button>
+                    <button class="class-select-button p-3 flex flex-col justify-center items-center rounded-lg" data-class="hunter" style="--class-color: var(--c-hunter);">
+                        <img src="https://wow.zamimg.com/images/wow/icons/large/classicon_hunter.jpg" alt="Hunter" class="w-12 h-12 rounded-md">
+                        <span class="text-xs font-bold mt-2">Hunter</span>
+                    </button>
+                    <button class="class-select-button p-3 flex flex-col justify-center items-center rounded-lg" data-class="rogue" style="--class-color: var(--c-rogue);">
+                        <img src="https://wow.zamimg.com/images/wow/icons/large/classicon_rogue.jpg" alt="Rogue" class="w-12 h-12 rounded-md">
+                        <span class="text-xs font-bold mt-2">Rogue</span>
+                    </button>
+                    <button class="class-select-button p-3 flex flex-col justify-center items-center rounded-lg" data-class="priest" style="--class-color: var(--c-priest);">
+                        <img src="https://wow.zamimg.com/images/wow/icons/large/classicon_priest.jpg" alt="Priest" class="w-12 h-12 rounded-md">
+                        <span class="text-xs font-bold mt-2">Priest</span>
+                    </button>
+                    <button class="class-select-button p-3 flex flex-col justify-center items-center rounded-lg" data-class="shaman" style="--class-color: var(--c-shaman);">
+                        <img src="https://wow.zamimg.com/images/wow/icons/large/classicon_shaman.jpg" alt="Shaman" class="w-12 h-12 rounded-md">
+                        <span class="text-xs font-bold mt-2">Shaman</span>
+                    </button>
+                    <button class="class-select-button p-3 flex flex-col justify-center items-center rounded-lg" data-class="mage" style="--class-color: var(--c-mage);">
+                        <img src="https://wow.zamimg.com/images/wow/icons/large/classicon_mage.jpg" alt="Mage" class="w-12 h-12 rounded-md">
+                        <span class="text-xs font-bold mt-2">Mage</span>
+                    </button>
+                     <button class="class-select-button p-3 flex flex-col justify-center items-center rounded-lg" data-class="warlock" style="--class-color: var(--c-warlock);">
+                        <img src="https://wow.zamimg.com/images/wow/icons/large/classicon_warlock.jpg" alt="Warlock" class="w-12 h-12 rounded-md">
+                        <span class="text-xs font-bold mt-2">Warlock</span>
+                    </button>
+                    <button class="class-select-button p-3 flex flex-col justify-center items-center rounded-lg" data-class="druid" style="--class-color: var(--c-druid);">
+                        <img src="https://wow.zamimg.com/images/wow/icons/large/classicon_druid.jpg" alt="Druid" class="w-12 h-12 rounded-md">
+                        <span class="text-xs font-bold mt-2">Druid</span>
+                    </button>
+                </div>
+
+                <div id="class-details-area" class="mt-8">
+                    <!-- Dynamic Content Here -->
+                </div>
+            </div>
+        </section>
+        
+    </main>
+    
+    <footer class="border-t border-t-[var(--color-border)] mt-16">
+        <div class="container mx-auto px-4 py-6 text-center text-sm text-[var(--color-text-secondary)]">
+            <p>This interactive report is a conceptual visualization of "The Ultimate Polish" proposal addendum. All content is derived from the source document for illustrative purposes.</p>
+            <p class="mt-2 text-xs">&copy; 2025. Not affiliated with Blizzard Entertainment. World of Warcraft is a trademark of Blizzard Entertainment.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const classBalanceData = {
+                warrior: {
+                    name: "Warrior",
+                    color: "var(--c-warrior)",
+                    specs: {
+                        arms: { 
+                            name: "Arms", icon: "ability_warrior_savageblow", philosophy: "To solidify Arms as a viable sustained damage dealer with unique raid utility, moving it beyond a mere Mortal Strike debuff bot. The changes focus on improving rage generation, bleed synergy, and adding controlled AoE burst.",
+                            target: "No DPS adjustment - focus on sustained damage/utility",
+                            fixes: [ { change: "Sustained PvE Damage: Increase the damage scaling of Mortal Strike and the bleed damage scaling of Deep Wounds via talents.", rationale: "Currently, Arms' damage outside of execute phase is lackluster. Buffing its core abilities ensures it contributes meaningful damage throughout a fight, not just at the end." }, { change: "Rage Generation: Improve baseline rage generation from white hits slightly OR reduce weapon speed dependency via talents.", rationale: "Arms can feel rage-starved, especially with faster weapons. This change smooths out the rotation and makes it less reliant on a single weapon type." }, { change: "Bleed Synergy/Utility: The Blood Frenzy talent now also causes targets affected by Rend or Deep Wounds to take 2% increased magical damage.", rationale: "This gives Arms a unique and valuable raid utility, making it a desirable addition to caster groups and solidifying its identity as a master of debilitating wounds." } ], 
+                            buffs: [ { change: "Overpower: Increase Overpower's base damage slightly.", rationale: "A simple buff to make this core rotational ability more impactful and rewarding to use on dodges." }, { change: "Two-Handed Weapon Specialization: Increase damage bonus slightly.", rationale: "A minor tweak to reinforce the specialization's identity as the master of two-handed weapons." } ], 
+                            new_abilities: [ { change: "Bladestorm", icon: "ability_warrior_bladestorm", rationale: "Provides Arms with a much-needed AoE burst cooldown, making it valuable on cleave fights and in dungeons, a major weakness of the original spec." }, { change: "Sudden Death", icon: "ability_warrior_sudden_death", rationale: "Introduces an exciting proc-based mechanic that adds variance to the rotation and improves sustained damage outside of the normal execute window." }, { change: "War Banners", icon: "inv_banner_02", rationale: "Adds significant and unique utility, allowing Arms to contribute defensively or offensively in a way no other class can, reinforcing the 'battlefield commander' fantasy." } ], 
+                            talent_polish: [ { change: "Integrate Bladestorm, Sudden Death, and Banner talents into compelling end-of-tree choices.", rationale: "Ensures the new abilities feel like earned capstones for deep investment in the Arms tree." } ] 
+                        },
+                        fury: { 
+                            name: "Fury", icon: "ability_warrior_innerrage", philosophy: "To smooth out Fury's extreme performance curve by improving its early-game viability and rage generation, while slightly tuning its top-end scaling to prevent it from being the mandatory default melee. The focus is on consistency and quality-of-life.",
+                            target: "DPS Nerf 16-20% (late-game); Buff (early-game)",
+                            fixes: [ { change: "Early Rage Generation: New talent 'Unbridled Wrath' grants extra rage on crits.", rationale: "Addresses the 'chicken and egg' problem where Fury needs rage to do damage but needs gear to generate rage. This helps Fury feel better to play while gearing up." }, { change: "Threat Mitigation: Add a talent to reduce threat generated by Bloodthirst and Whirlwind.", rationale: "High threat was a major issue for Fury Warriors, often forcing them to hold back. This baked-in mitigation allows them to perform their role more effectively without pulling aggro." }, { change: "Dual-Wield Hit Penalty: This penalty is removed entirely.", rationale: "Removes an archaic and punishing mechanic, making gearing for hit rating more straightforward and less frustrating." }, { change: "Whirlwind Scaling: Increase the weapon damage coefficient of Whirlwind slightly and allow it to hit 4 targets baseline.", rationale: "Improves Fury's subpar AoE capabilities, making them more useful on trash packs and cleave-heavy encounters." } ], 
+                            buffs: [ { change: "Bloodthirst: Critical strikes with Bloodthirst now apply a small Heal-over-Time effect to the Warrior.", rationale: "Adds minor self-sustain that fits the 'blood crazed' theme, improving solo survivability and reducing strain on healers." } ], 
+                            new_abilities: [ { change: "Raging Blow", icon: "ability_warrior_ragingblow", rationale: "Adds a decision point to the rotation. Do you use the proc on Bloodthirst or the harder-hitting Raging Blow? This increases the skill ceiling and makes the Enrage state more interactive." }, { change: "Titan's Grip", icon: "ability_warrior_titansgrip", rationale: "The ultimate class fantasy ability for Fury. While a major change, offering it as a capstone talent provides an incredibly exciting and visually distinct playstyle, balanced by a damage trade-off." } ], 
+                            talent_polish: [], 
+                            nerfs: [ { change: "Flurry: Add a small internal cooldown to Flurry procs.", rationale: "Controls the extreme RNG burst potential where lucky streaks could provide near-permanent uptime, smoothing out DPS to be more consistent and predictable." }, { change: "Overall Damage Tuning: If still outperforming, slightly reduce the damage bonus from Dual Wield Specialization or Enrage.", rationale: "A tuning knob to ensure Fury, while powerful, doesn't completely eclipse all other melee DPS in late-game gear, promoting greater spec diversity." } ]
+                        },
+                        protection: { 
+                            name: "Protection", icon: "ability_warrior_defensivestance", philosophy: "To solidify Protection as the premier physical damage tank while significantly improving its AoE threat generation and raid utility. The changes aim to make tanking smoother, more engaging, and provide tools to handle a wider variety of threats.",
+                            target: "No DPS adjustment - focus on QoL/Threat",
+                            fixes: [ { change: "AoE Threat: Buff Thunder Clap damage/threat and reduce its rage cost.", rationale: "This is Protection's biggest weakness. A direct buff makes holding multiple mobs far more reliable and less frustrating, which is crucial for dungeons and many raid encounters." }, { change: "Devastate: Now applies the Sunder Armor effect faster and generates more threat.", rationale: "Improves single-target threat ramp-up, allowing DPS to start their rotation sooner, and makes the rotation feel more impactful." }, { change: "Clarity: Add a visual timer bar for Shield Block duration.", rationale: "A simple but vital quality-of-life change that allows tanks to better time their abilities and manage mitigation without relying on third-party addons." } ],
+                            buffs: [ { change: "Utility & Survivability: Reduce the cooldowns on Shield Wall and Last Stand.", rationale: "Major defensive cooldowns in TBC had excessively long timers. Reducing them allows for more frequent use in difficult encounters, giving tanks more tools to survive." }, { change: "Improved Defensive Stance: Now reduces spell damage taken by a small amount.", rationale: "While still primarily a physical tank, this gives Protection Warriors a slight edge against magic damage, a key weakness, making them more versatile." } ],
+                            new_abilities: [ { change: "Mass Spell Reflection", icon: "ability_warrior_shieldreflection", rationale: "Provides incredible, unique raid utility that can completely negate certain boss mechanics, making a Protection Warrior a highly desirable strategic asset." }, { change: "Shockwave", icon: "ability_warrior_shockwave", rationale: "Gives Protection Warriors a reliable AoE control tool, perfect for managing trash packs and adds in raid encounters." }, { change: "Vigilance", icon: "ability_warrior_vigilance", rationale: "A powerful tanking utility tool that helps with tank swaps, allows a high-dps player to go all-out without pulling aggro, and provides another way to control the flow of a fight." } ],
+                            talent_polish: [ { change: "Make Concussion Blow a baseline Protection ability.", rationale: "Frees up a talent point and gives Prot a reliable single-target stun as part of its core kit." } ]
+                        }
+                    }
+                },
+                paladin: {
+                    name: "Paladin", color: "var(--c-paladin)",
+                    specs: {
+                        holy: { name: "Holy", icon: "spell_holy_holybolt", philosophy: "To enhance Holy Paladin's role as a supreme single-target 'tank' healer while improving throughput and adding powerful, thematic cooldowns for clutch moments.", target: "No DPS adjustment - focus on healing throughput/utility", fixes: [{change: "Clarity: Beacon of Light target is clearly marked on unit frames.", rationale: "A simple UI improvement to make it obvious who the Beacon is on, reducing confusion in hectic raid environments."}], buffs: [{change: "Throughput: Increase Holy Shock healing and reduce its cooldown. Buff Illumination mana return.", rationale: "These changes make Holy Shock a more reliable spot heal and improve mana efficiency, key aspects of the Holy Paladin's healing style."}], new_abilities: [{change: "Light of the Martyr", icon: "spell_holy_lightofthemartyr", rationale: "Introduces a high-skill, high-reward ability for clutch saves, fitting the theme of self-sacrifice for the Light."},{change: "Aura Mastery", icon: "spell_holy_auramastery", rationale: "Adds a much-needed utility cooldown, allowing Paladins to strategically amplify their group's defense or offense."}], talent_polish: [{change: "Integrate new abilities into the talent tree.", rationale: "Ensures the new cooldowns feel like meaningful capstones."}] },
+                        protection: { name: "Protection", icon: "ability_paladin_shieldofthetemplar", philosophy: "To solidify Protection Paladin as the premier AoE and spell-damage tank, improving their threat generation, group utility, and providing more active mitigation tools.", target: "No DPS adjustment - focus on Threat/Survivability", fixes: [{change: "Avenger's Shield: Increase travel speed and silence duration.", rationale: "Makes the iconic 'Captain America' shield feel more responsive and effective as a pulling and interruption tool."}], buffs: [{change: "Threat/Utility: Buff threat on Hammer of the Righteous and damage of Holy Shield.", rationale: "Directly addresses threat generation, a key concern for Protection Paladins, allowing them to better hold aggro against high-dps classes."},{change: "Group Utility: Improved Devotion Aura provides passive spell resistance.", rationale: "Enhances their role as an anti-caster tank, providing a valuable passive benefit to their entire group."}], new_abilities: [{change: "Ardent Defender", icon: "ability_paladin_ardentdefender", rationale: "Provides a powerful safety net, increasing survivability and allowing for more aggressive play in high-damage situations."},{change: "Guardian of Ancient Kings", icon: "ability_paladin_guardianofancientkings", rationale: "Gives Protection Paladins a signature 'big button' cooldown, comparable to Shield Wall, reinforcing their role as a stalwart protector."}], talent_polish: [] },
+                        retribution: { name: "Retribution", icon: "spell_holy_auraoflight", philosophy: "To improve Retribution's quality-of-life, mana management, and damage consistency, making it a competitive melee DPS without relying on 'Seal Twisting' exploits. The goal is a fun, fluid rotation with unique utility.", target: "No DPS adjustment - focus on QoL/mechanics", fixes: [{change: "Seal/Judgement Reliability: Improve scaling and have Judgements refresh Seals.", rationale: "Reduces the clunky feeling of the rotation by removing the need to constantly re-apply seals, making gameplay smoother and more intuitive."},{change: "Mana Management: Buff mana return and cost reduction talents.", rationale: "Retribution's mana issues were a significant hindrance. These changes allow for more sustained damage output over long fights."}], buffs: [{change: "Vindication: Increase the Attack Power reduction effect and reliability.", rationale: "Makes this unique debuff more potent and reliable, solidifying Retribution's utility in a raid."}], new_abilities: [{change: "Divine Storm", icon: "ability_paladin_divinestorm", rationale: "Provides much-needed AoE capability, a major weakness of the original spec, while reinforcing the hybrid damage/healing fantasy."}], talent_polish: [], nerfs: [{change: "Immunity Chains: Add a short shared cooldown between Divine Shield and Blessing of Protection.", rationale: "A targeted PvP change to reduce the frustration of 'bubble-spamming', promoting more tactical use of immunities."}] }
+                    }
+                },
+                hunter: {
+                    name: "Hunter", color: "var(--c-hunter)",
+                    specs: {
+                        beast_mastery: { name: "Beast Mastery", icon: "ability_hunter_beasttaming", philosophy: "To smooth out BM's early-game dominance while improving its late-game scaling and pet survivability. The goal is a spec that feels powerful throughout the expansion, not just in the first tier.", target: "DPS Nerf 4-8% (early-game); Buff (late-game scaling)", fixes: [{change: "Pet Survivability & AI: Pets gain more stats and AoE damage reduction. AI is more responsive.", rationale: "Pets dying easily was a major frustration. Making them more durable and responsive makes the core gameplay loop more enjoyable and effective."}], buffs: [{change: "Scaling: Improve how pet damage scales with Hunter's Haste and AP in later tiers.", rationale: "Addresses the issue of pets falling off in damage in T5/T6, ensuring BM remains a competitive spec throughout the expansion."}], new_abilities: [{change: "Barbed Shot", icon: "ability_hunter_barbedshot", rationale: "Introduces a DoT management layer to the rotation, increasing engagement and providing a way to actively boost pet damage."},{change: "Animal Companion", icon: "ability_hunter_animalcompanion", rationale: "A huge flavor win that adds visual flair and passive cleave, reinforcing the 'master of beasts' fantasy."}], talent_polish: [], nerfs: [{change: "Steady Shot Macro Abuse: Add a short internal cooldown to prevent perfect macro weaving.", rationale: "Targets an exploitative playstyle, rewarding skillful manual timing over a simple macro for optimal DPS."}] },
+                        marksmanship: { name: "Marksmanship", icon: "ability_marksmanship", philosophy: "To establish Marksmanship as the premiere 'sniper' spec, with a focus on powerful, deliberate shots and strong single-target damage. Changes aim to improve mana economy and make its core abilities more impactful.", target: "DPS Bump 4-8%", fixes: [{change: "Trueshot Aura Scaling: Now scales dynamically with the Hunter's Attack Power.", rationale: "Makes the Hunter's gear progression more valuable to the entire raid, rather than being a flat, static buff."},{change: "Aimed Shot Cast Time: Reduced from 3.0s to 2.5s.", rationale: "Makes the spec's signature shot less punishing to use in movement-heavy fights and improves overall rotation fluidity."}], buffs: [{change: "New 41p Talent 'Master Sniper'", icon: "ability_hunter_snipertraining", rationale: "Creates an exciting, proc-based gameplay loop that rewards high crit, delivering on the fantasy of a master sniper lining up the perfect shot."}], new_abilities: [{change: "Double Tap", icon: "ability_hunter_doubletap", rationale: "Provides a controllable burst cooldown, giving MM Hunters a tool to use during burn phases."}], talent_polish: [] },
+                        survival: { name: "Survival", icon: "ability_hunter_astralshift", philosophy: "To lean into Survival's identity as a cunning trapper and utility expert. The changes focus on making traps more usable and adding a unique DoT-based rotation that sets it apart from the other Hunter specs.", target: "No DPS adjustment - focus on utility/mechanics", fixes: [{change: "Trap Mechanics: Allow in-combat trap placement and add a Trap Launcher ability.", rationale: "This is the single biggest quality-of-life fix for Survival. It makes their core mechanic usable and strategic in raids and dungeons, rather than a clunky pre-pull tool."}], buffs: [{change: "Expose Weakness: Improve uptime via talent duration increase.", rationale: "Makes this key utility debuff more reliable, solidifying Survival's spot in a melee group."}], new_abilities: [{change: "Black Arrow", icon: "ability_hunter_blackarrow", rationale: "Creates a unique DoT-focused playstyle, adding depth and a fun proc-based interaction to the rotation."},{change: "Explosive Shot", icon: "ability_hunter_explosiveshot", rationale: "Replaces the clunky original with a satisfying, impactful core ability that synergizes with Black Arrow, defining the spec's gameplay loop."}], talent_polish: [] }
+                    }
+                },
+                rogue: {
+                    name: "Rogue", color: "var(--c-rogue)",
+                    specs: {
+                        assassination: { name: "Assassination", icon: "ability_rogue_eviscerate", philosophy: "To lean into the 'master poisoner' fantasy by making poisons and Envenom more impactful. The goal is a spec with strong sustained damage and a focus on debuff management.", target: "No DPS adjustment", fixes: [{change: "Ramp/Finishers: Rupture applies instantly. Envenom damage and buff duration increased.", rationale: "Improves the pacing of the rotation, making finishers feel more immediately impactful and less reliant on a long ramp-up time."}], buffs: [{change: "Poison Scaling: Improve poison application chance and damage scaling via talents.", rationale: "Directly buffs the core identity of the spec, ensuring that poisons remain a significant portion of the Rogue's damage throughout the expansion."}], new_abilities: [{change: "Vendetta", icon: "ability_rogue_vendetta", rationale: "Provides a powerful single-target burst cooldown, perfect for burn phases and adding significant value to raid encounters."}], talent_polish: [] },
+                        combat: { name: "Combat", icon: "ability_backstab", philosophy: "To address Combat's extreme dominance by tuning its top-end scaling, while significantly improving its lackluster AoE and energy management. The goal is a powerful, consistent melee spec that doesn't invalidate all others.", target: "DPS Nerf 8-12% (late-game); Buff (AoE/Energy)", fixes: [{change: "AoE Rotation: Blade Flurry now hits up to 2 additional targets.", rationale: "This is a massive quality-of-life improvement, turning Blade Flurry into a true cleave cooldown and making Combat Rogues far more effective on multi-target fights."},{change: "Energy Starvation: Combat Potency proc chance and Adrenaline Rush are improved.", rationale: "Addresses the 'feast or famine' nature of the spec's energy regeneration, leading to a smoother and more consistent rotation."}], buffs: [], new_abilities: [{change: "Killing Spree", icon: "ability_rogue_killingspree", rationale: "Adds a visually exciting and powerful cooldown that provides both damage and mobility, fitting the 'blademaster' fantasy."}], talent_polish: [], nerfs: [{change: "Sword Specialization: Add a small internal cooldown to the extra attack proc.", rationale: "The primary source of Combat's overpowered scaling. This change reigns in the extreme RNG of the proc, making its damage output more predictable and in line with other melee specs."}] },
+                        subtlety: { name: "Subtlety", icon: "ability_stealth", philosophy: "To transform Subtlety from a niche PvP spec into a viable and exciting PvE damage dealer with a unique burst-window playstyle centered around shadow damage and control.", target: "Significant DPS Buff", fixes: [], buffs: [{change: "Damage Outside Shadow Dance: Buff Hemorrhage damage and other talents.", rationale: "To be viable, Subtlety needs to do competitive damage outside of its cooldowns. These buffs increase its baseline sustained damage."}], new_abilities: [{change: "Shadow Dance", icon: "ability_rogue_shadowdance", rationale: "The cornerstone of the redesign. This ability creates a unique, high-skill burst window that is incredibly fun and rewarding to master."},{change: "Marked for Death", icon: "ability_rogue_markedfordeath", rationale: "Provides on-demand burst setup, perfect for target swapping or setting up a powerful Shadow Dance window."}], talent_polish: [{change: "Replace Hemorrhage talent with 'Nightblade' (applies a bleed and slow).", rationale: "Consolidates two effects into one ability, streamlining the rotation and improving talent point efficiency."}] }
+                    }
+                },
+                priest: {
+                    name: "Priest", color: "var(--c-priest)",
+                    specs: {
+                        shadow: { name: "Shadow", icon: "spell_shadow_shadowform", philosophy: "To address Shadow's key pain points—ramp-up time and mana issues—while improving its late-game scaling to ensure it remains a top-tier caster throughout the expansion.", target: "DPS Bump 20-24%", fixes: [{change: "Ramp-up Time: Shadow Word: Pain becomes an instant application.", rationale: "Greatly improves damage on short-lived targets and makes the rotation feel much more fluid from the start."},{change: "Mind Flay Scaling: Mind Flay now scales correctly with spellpower and can critically strike.", rationale: "A crucial bug-fix and buff that makes the spec's primary filler spell scale properly with gear, which is essential for late-game viability."}], buffs: [{change: "AOE Toolkit: Mind Sear is introduced as a channeled AoE spell.", rationale: "Fills a massive hole in the Shadow Priest's toolkit, giving them a viable option for multi-target damage."}], new_abilities: [{change: "Dispersion", icon: "spell_shadow_dispersion", rationale: "Provides a much-needed defensive cooldown and a powerful tool for mana regeneration, addressing two of the spec's biggest weaknesses."}], talent_polish: [] },
+                        holy: { name: "Holy", icon: "spell_holy_guardianspirit", philosophy: "To enhance Holy's role as a versatile and powerful throughput healer, with a focus on improving reactivity and adding impactful, thematic cooldowns.", target: "No DPS adjustment - focus on healing throughput/utility", fixes: [{change: "Clarity: Holy Word: Sanctuary's ground effect is visually clearer and targets smarter.", rationale: "A quality-of-life fix to make this powerful healing spell more reliable and easier to see in a chaotic raid environment."}], buffs: [{change: "Reactivity: Reduce Holy Shock's cooldown for faster reactive healing.", rationale: "Improves Holy's ability to respond to sudden bursts of damage, making it a more effective spot healer."}], new_abilities: [{change: "Light of Dawn", icon: "spell_paladin_lightofdawn", rationale: "Gives Holy a much-needed tool for healing stacked groups, a situation where they previously struggled compared to Shamans or Druids."},{change: "Guardian Spirit", icon: "spell_holy_guardianspirit", rationale: "The ultimate 'save a tank' button. This iconic ability provides immense utility and solidifies Holy's role as a powerful protector."}], talent_polish: [] },
+                        discipline: { name: "Discipline", icon: "spell_holy_powerwordshield", philosophy: "To lean into Discipline's identity as a proactive, damage-preventing healer. The changes focus on making Power Word: Shield more powerful and mana-efficient, and adding a new, engaging healing/damage ability.", target: "No DPS adjustment - focus on proactive healing", fixes: [], buffs: [{change: "Shielding: Power Word: Shield's absorption and mana cost are improved via talents.", rationale: "Directly buffs the core ability of the spec, making shielding a more sustainable and powerful strategy."},{change: "Cooldown Usage: Pain Suppression and Power Infusion cooldowns are reduced.", rationale: "Allows these powerful utility spells to be used more frequently, increasing the Disc Priest's overall contribution to the raid."}], new_abilities: [{change: "Penance", icon: "spell_holy_penance", rationale: "An iconic Disc Priest ability that provides a flexible, efficient, and fun tool for both healing and contributing damage, perfectly fitting the spec's fantasy."}], talent_polish: [] }
+                    }
+                },
+                shaman: {
+                    name: "Shaman", color: "var(--c-shaman)",
+                    specs: {
+                        elemental: { name: "Elemental", icon: "spell_nature_lightning", philosophy: "To solve Elemental's chronic mana issues and clunky totem management, while adding a signature nuke to make the rotation more satisfying. The goal is a powerful, mobile caster with strong burst potential.", target: "DPS Bump 12-16%", fixes: [{change: "Totem Leash & Destruction: Totems have a leash radius and gain HP scaling.", rationale: "Massive quality-of-life improvements that make totems far less frustrating to use in mobile fights, a core weakness of the original design."},{change: "Mana Issues: Talents like Elemental Focus are significantly buffed.", rationale: "Directly addresses the spec's biggest problem, allowing Elemental Shamans to maintain damage output without going out of mana after a minute."}], buffs: [], new_abilities: [{change: "Lava Burst", icon: "spell_shaman_lavaburst", rationale: "Provides a reliable, high-damage button in the rotation, creating a satisfying synergy and a strong burst window."},{change: "Thunderstorm", icon: "spell_shaman_thunderstorm", rationale: "Adds much-needed utility, a defensive tool, and another source of mana regeneration, making the spec more well-rounded."}], talent_polish: [] },
+                        enhancement: { name: "Enhancement", icon: "spell_nature_lightningshield", philosophy: "To improve Enhancement's scaling, mana sustainability, and provide a signature cooldown. The focus is on making the spec feel like a true battle-mage, weaving spells and melee strikes.", target: "No DPS adjustment - focus on QoL/Scaling", fixes: [{change: "Scaling Issues: Improve Attack Power scaling for core abilities.", rationale: "Ensures that Enhancement damage keeps pace with other melee in later tiers of gear, addressing a key scaling problem."},{change: "Mana Issues: Reduce Stormstrike mana cost and improve mana return talents.", rationale: "Makes the rotation more sustainable over long fights, a critical fix for a mana-based melee spec."}], buffs: [{change: "Shamanistic Rage: Cooldown reduced and adds damage reduction.", rationale: "Turns this ability into a powerful and reliable tool for both mana sustain and personal survivability."}], new_abilities: [{change: "Feral Spirit", icon: "spell_shaman_feralspirit", rationale: "An iconic and visually impressive ability that provides a significant burst cooldown, solidifying Enhancement's identity."},{change: "Maelstrom Weapon", icon: "ability_shaman_maelstromweapon", rationale: "The ultimate expression of the battle-mage fantasy, allowing Enhancement to seamlessly weave instant-cast spells into their melee rotation. This would be a game-changing and highly desired addition."}], talent_polish: [] },
+                        restoration: { name: "Restoration", icon: "spell_nature_healingwave", philosophy: "To enhance Resto's role as the premier AoE/group healer by improving throughput and adding tools for mobility and instant-cast healing.", target: "No DPS adjustment - focus on HPS/utility", fixes: [], buffs: [{change: "Throughput: Reduce Chain Heal mana cost and buff healing-boosting talents.", rationale: "Directly buffs the core spell and identity of the spec, making them even better at their primary role of raid healing."}], new_abilities: [{change: "Spiritwalker's Grace", icon: "spell_shaman_spiritwalkersgrace", rationale: "Addresses a key weakness of the spec by providing a powerful tool for handling heavy movement mechanics without sacrificing healing output."},{change: "Riptide", icon: "spell_nature_riptide", rationale: "Gives Resto Shamans a much-needed instant heal to react to spike damage and heal on the move, making them more versatile."},{change: "Earth Shield", icon: "spell_nature_magicimmunity", rationale: "A massive quality-of-life and utility buff, allowing this powerful defensive spell to be used on tanks or other key raid members, not just the Shaman."}], talent_polish: [] }
+                    }
+                },
+                mage: {
+                    name: "Mage", color: "var(--c-mage)",
+                    specs: {
+                        arcane: { name: "Arcane", icon: "spell_holy_magicalsentry", philosophy: "To solve Arcane's one-dimensional 'one button' rotation and mana issues, transforming it into a dynamic spec about managing mana and stacks for controlled burst.", target: "DPS Nerf 0-4% (Tune mana issues, improve rotation)", fixes: [{change: "Arcane Blast Mana Scaling: Reduce the stacking mana cost penalty.", rationale: "Makes the rotation more sustainable and less punishing, allowing for longer burn phases before needing to conserve mana."}], buffs: [{change: "Arcane Power: Cooldown reduced.", rationale: "Allows this key burst cooldown to be used more frequently, aligning better with raid encounter timings."}], new_abilities: [{change: "Arcane Barrage", icon: "ability_mage_arcanebarrage", rationale: "The key to fixing the rotation. It provides a mobile damage option and a strategic way to manage mana by resetting the punishing Arcane Blast debuff."}], talent_polish: [] },
+                        fire: { name: "Fire", icon: "spell_fire_firebolt02", philosophy: "To fix the frustrating 'Ignite munching' issue and give Fire Mages powerful, controllable burst cooldowns that reward skillful play.", target: "No DPS adjustment", fixes: [{change: "Ignite Mechanics: Ignite DoT now 'rolls over' instead of being overwritten.", rationale: "A critical bug fix that was a huge source of frustration and lost damage for Fire Mages. This ensures all crit damage is properly accounted for."}], buffs: [{change: "Critical Mass: Increase crit chance bonus.", rationale: "A simple buff to help Fire Mages reach crit levels where the spec feels fluid and powerful."}], new_abilities: [{change: "Combustion", icon: "spell_fire_combustion", rationale: "Gives Fire a high-skill cap ability that allows them to pool their DoTs into a massive burst of damage, perfect for execute phases."},{change: "Meteor", icon: "spell_fire_meteor", rationale: "Provides a visually spectacular and powerful AoE cooldown, addressing a weakness in the Fire Mage's toolkit."}], talent_polish: [] },
+                        frost: { name: "Frost", icon: "spell_frost_frostbolt02", philosophy: "To enhance Frost's control-oriented playstyle while making its damage rotation more engaging and rewarding through better proc interactions.", target: "No DPS adjustment", fixes: [], buffs: [{change: "Fingers of Frost Interaction: Ice Lance now deals triple damage to frozen targets when consuming a FoF charge.", rationale: "Makes the core 'Shatter combo' gameplay much more rewarding and impactful."},{change: "Proc Rate: Increase Fingers of Frost proc chance and add the Brain Freeze talent.", rationale: "Increases the consistency of the rotation, reducing downtime and making the spec feel more dynamic and less reliant on RNG."}], new_abilities: [{change: "Frozen Orb", icon: "spell_frost_frozenorb", rationale: "An iconic Mage ability that provides excellent AoE damage, kiting potential, and a reliable way to generate Fingers of Frost procs."},{change: "Deep Freeze", icon: "ability_mage_deepfreeze", rationale: "Gives Frost powerful control in PvP and a new damage option for PvE, making it more versatile in raid encounters."}], talent_polish: [] }
+                    }
+                },
+                warlock: {
+                    name: "Warlock", color: "var(--c-warlock)",
+                    specs: {
+                        affliction: { name: "Affliction", icon: "spell_shadow_deathcoil", philosophy: "To improve Affliction's quality-of-life by addressing ramp-up time and shard economy, while making its DoT-based rotation more engaging and less prone to having its key debuffs overwritten.", target: "No DPS adjustment - focus on QoL/ramp-up", fixes: [{change: "Ramp-up Time: New talent 'Soul Siphon' helps maintain DoTs in execute phase.", rationale: "Reduces the frustration of having to re-apply all DoTs on a target that is about to die, a key pain point of the spec."},{change: "Shard Economy: Drain Soul ticks can generate shards.", rationale: "Provides a reliable, in-combat way to regenerate Soul Shards, reducing the out-of-combat farming required to raid."}], buffs: [{change: "Nightfall: Proc chance increased and can proc from more DoTs.", rationale: "Makes the core Shadow Bolt proc more consistent and the rotation more dynamic."}], new_abilities: [{change: "Pandemic", icon: "spell_shadow_unstableaffliction", rationale: "Adds an exciting layer of RNG and power to DoT damage, making the spec's damage profile more varied."},{change: "Soul Burn", icon: "ability_warlock_soulburn", rationale: "Provides situational utility by consuming a Soul Shard to empower the next spell, such as an instant-cast Soul Fire."}], talent_polish: [] },
+                        demonology: { name: "Demonology", icon: "spell_shadow_metamorphosis", philosophy: "To lean into the 'master summoner' fantasy by significantly improving pet survivability and scaling, and providing unique raid utility. The ultimate goal is the iconic Metamorphosis cooldown.", target: "No DPS adjustment - focus on pet scaling/utility", fixes: [{change: "Pet Scaling and Survivability: Demons gain more stats from the Warlock.", rationale: "A critical fix. This makes the Warlock's primary tool—their demon—far more durable and effective in raid environments."}], buffs: [{change: "Soul Link: Damage shared increased and provides a damage buff.", rationale: "Enhances the tanky, supportive nature of the spec, making the Warlock and their pet a formidable duo."}], new_abilities: [{change: "Demonic Pact", icon: "spell_shadow_demonicpact", rationale: "Provides unique and powerful raid utility, giving Demonology a highly sought-after spot in caster groups."},{change: "Metamorphosis", icon: "spell_shadow_metamorphosis", rationale: "The ultimate expression of the Demonology fantasy. This iconic cooldown provides a massive burst of power and survivability, making it one of the most exciting abilities in the game."}], talent_polish: [] },
+                        destruction: { name: "Destruction", icon: "spell_shadow_rainoffire", philosophy: "To tune down Destruction's over-the-top burst potential while improving its utility and adding more dynamic elements to its rotation. The goal is a powerful, direct-damage caster with strong cleave options.", target: "DPS Nerf 12-16% - Tune burst, improve utility", fixes: [{change: "Soul Shards & Shadowburn: Shadowburn now generates a shard on killing blows.", rationale: "Makes the spec's execute ability shard-neutral on kills, improving quality-of-life and resource management."}], buffs: [{change: "Backlash: Increase proc chance slightly.", rationale: "Makes this talent more reliable, leading to more instant Incinerates and a more dynamic rotation."}], new_abilities: [{change: "Chaos Bolt", icon: "ability_warlock_chaosbolt", rationale: "Gives Destruction a much-needed, reliable high-damage spell that can't be mitigated, making it incredibly valuable against certain bosses and in PvP."},{change: "Havoc", icon: "ability_warlock_havoc", rationale: "Provides powerful and unique two-target cleave, giving Destruction a niche where it can truly excel."}], talent_polish: [], nerfs: [{change: "Overall Damage Tuning: The primary nerf target to bring its top-end damage in line with other casters.", rationale: "The goal is to reduce the raw power of Shadow Bolt spam in ideal conditions to promote greater diversity among caster DPS."}] }
+                    }
+                },
+                 druid: {
+                    name: "Druid", color: "var(--c-druid)",
+                    specs: {
+                        balance: { name: "Balance", icon: "spell_nature_starfall", philosophy: "To transform Balance from a mana-starved, low-utility spec into a competitive caster with a dynamic Eclipse-based rotation and powerful AoE.", target: "DPS Bump 16-20%", fixes: [{change: "Mana Issues: Merge and buff mana-regen talents.", rationale: "Directly solves the spec's biggest historical problem, allowing Boomkins to cast their spells for an entire fight without running out of mana."},{change: "Eclipse RNG: Add a simple, low-RNG version of Eclipse.", rationale: "Replaces the original frustrating RNG with a predictable, controllable system that rewards skillful play and makes the rotation engaging."}], buffs: [{change: "Improved Moonkin Form: Now provides a spell haste aura.", rationale: "Provides a powerful and highly sought-after raid buff, making a Balance Druid a mandatory addition to any caster group."}], new_abilities: [{change: "Starsurge", icon: "spell_arcane_starsurge", rationale: "Gives the spec a much-needed mobile damage button and an extra spell school to deal with resistances."}], talent_polish: [] },
+                        feral_cat: { name: "Feral (Cat)", icon: "ability_druid_catform", philosophy: "To improve the quality-of-life of the complex Feral rotation by addressing energy management and combo point generation, while adding iconic abilities that solidify its identity.", target: "No DPS adjustment - focus on QoL", fixes: [{change: "Power Shifting: Shifting to Cat Form instantly grants energy.", rationale: "A critical quality-of-life fix that makes the core 'powershifting' mechanic smoother and less prone to error."},{change: "Combo Point Starvation: Shred crits and Primal Fury generate more combo points.", rationale: "Makes the rotation more fluid and consistent by ensuring a steadier supply of combo points for finishers."}], buffs: [], new_abilities: [{change: "Savage Roar", icon: "ability_druid_savageroar", rationale: "Adds a 'keep-up' buff to the rotation, increasing the skill ceiling and rewarding proactive play."},{change: "Berserk", icon: "ability_druid_berserk", rationale: "Provides a powerful burst cooldown that allows Feral Druids to unleash a flurry of attacks, perfect for burn phases."}], talent_polish: [] },
+                        feral_bear: { name: "Feral (Bear)", icon: "ability_racial_bearform", philosophy: "To solidify Bear tanks' position as supreme single-target meat shields by improving threat consistency and adding major defensive cooldowns.", target: "No DPS adjustment - focus on QoL/Survivability", fixes: [{change: "Threat Consistency: Leader of the Pack talent adds a threat bonus. Mangle and Lacerate threat increased.", rationale: "Addresses a key pain point, ensuring Bear tanks can reliably hold aggro against high-damage DPS."}], buffs: [{change: "Survivability: Talents reduce AoE damage taken and increase armor/stamina.", rationale: "Directly buffs their tankiness, reinforcing their role as a durable main tank."}], new_abilities: [{change: "Thrash", icon: "ability_druid_thrash", rationale: "Gives Bears a much-needed tool for holding threat on multiple mobs, a significant weakness of the original spec."},{change: "Survival Instincts", icon: "ability_druid_survivalinstincts", rationale: "Provides a 'Shield Wall' equivalent, giving Bear tanks a crucial tool for surviving massive damage spikes in raid encounters."}], talent_polish: [] },
+                        restoration: { name: "Restoration", icon: "spell_nature_healingtouch", philosophy: "To enhance Resto's identity as the premier Heal-over-Time (HoT) raid healer by making their core spells more responsive and introducing a powerful healing cooldown.", target: "No DPS adjustment - focus on healing throughput", fixes: [{change: "Responsiveness: Reduce Swiftmend's GCD and increase Lifebloom's final bloom heal.", rationale: "Makes the spec feel more reactive and powerful, ensuring their signature spells have a satisfying and impactful payoff."}], buffs: [], new_abilities: [{change: "Tree of Life Form", icon: "ability_druid_treeoflife", rationale: "Transforms the clunky permanent form into an exciting and powerful 'burst healing' cooldown, perfect for handling intense raid damage."},{change: "Wild Growth", icon: "ability_druid_wildgrowth", rationale: "Provides a smart-healing group HoT, giving Resto Druids a powerful tool for efficient raid-wide healing and solidifying their role."}], talent_polish: [] }
+                    }
+                }
+            };
+            
+            const classDetailsContainer = document.getElementById('class-details-area');
+            const classSelectButtons = document.querySelectorAll('.class-select-button');
+
+            function displayClassDetails(className) {
+                const classInfo = classBalanceData[className];
+                if (!classInfo) {
+                    classDetailsContainer.innerHTML = '<p class="text-center text-[var(--color-text-secondary)]">Select a class to see details.</p>';
+                    return;
+                }
+
+                let tabsHtml = '<div class="flex flex-wrap gap-2 mb-6">';
+                let contentHtml = '';
+                let isFirstSpec = true;
+
+                for (const specKey in classInfo.specs) {
+                    const spec = classInfo.specs[specKey];
+                    tabsHtml += `<button class="spec-tab-button ${isFirstSpec ? 'active' : ''}" data-class="${className}" data-spec="${specKey}" style="--class-color: ${classInfo.color};">
+                        <img src="https://wow.zamimg.com/images/wow/icons/small/${spec.icon}.jpg" alt="${spec.name}" class="w-5 h-5 inline-block mr-2 rounded">
+                        ${spec.name}
+                    </button>`;
+                    
+                    let specContent = `<div id="spec-${className}-${specKey}" class="spec-content ${isFirstSpec ? '' : 'hidden'}">`;
+                    
+                    // Philosophy
+                    specContent += `
+                        <div class="bg-black/20 p-4 rounded-lg border-l-4 border-l-[var(--color-accent-purple)] mb-6">
+                            <h4 class="font-header text-lg text-[var(--color-accent-purple)] mb-2">Design Philosophy 🧠</h4>
+                            <p class="text-sm text-[var(--color-text-secondary)]">${spec.philosophy}</p>
+                        </div>
+                    `;
+
+                    // Performance Target
+                    let perfClass = 'neutral';
+                    if (spec.target.includes('Nerf')) perfClass = 'nerf';
+                    if (spec.target.includes('Bump') || spec.target.includes('Buff')) perfClass = 'buff';
+                    specContent += `
+                        <h4 class="spec-category-title">Performance Target 📊</h4>
+                        <div class="performance-bar">
+                             <div class="performance-fill ${perfClass}" style="width: 100%;">
+                                ${spec.target}
+                            </div>
+                        </div>
+                    `;
+
+                    // Categories
+                    const categories = {
+                        fixes: { title: "What to Fix 🔧", items: spec.fixes },
+                        buffs: { title: "What to Buff 💪", items: spec.buffs },
+                        new_abilities: { title: "Modern Abilities (Adapted) 🌟", items: spec.new_abilities },
+                        talent_polish: { title: "Talent Polish ✨", items: spec.talent_polish },
+                        nerfs: { title: "Potential Nerfs 📉", items: spec.nerfs }
+                    };
+
+                    for (const catKey in categories) {
+                        if (categories[catKey] && categories[catKey].items && categories[catKey].items.length > 0) {
+                            specContent += `<h4 class="spec-category-title">${categories[catKey].title}</h4><div>`;
+                            categories[catKey].items.forEach(item => {
+                                let iconHtml = '';
+                                if (item.icon) {
+                                    iconHtml = `<img src="https://wow.zamimg.com/images/wow/icons/large/${item.icon}.jpg" alt="${item.change}" class="ability-icon">`;
+                                }
+                                specContent += `
+                                    <div class="spec-detail-item">
+                                        <div class="change">${iconHtml}<span>${item.change}</span></div>
+                                        <p class="rationale">${item.rationale}</p>
+                                    </div>
+                                `;
+                            });
+                            specContent += '</div>';
+                        }
+                    }
+                    specContent += '</div>';
+                    contentHtml += specContent;
+                    isFirstSpec = false;
+                }
+                tabsHtml += '</div>';
+                classDetailsContainer.innerHTML = `<h2 class="text-3xl font-bold font-header mb-4" style="color:${classInfo.color}; text-shadow: 0 0 10px ${classInfo.color};">${classInfo.name} Changes</h2>` + tabsHtml + contentHtml;
+
+                document.querySelectorAll('.spec-tab-button').forEach(button => {
+                    button.addEventListener('click', () => {
+                        const targetClass = button.dataset.class;
+                        const targetSpec = button.dataset.spec;
+                        document.querySelectorAll(`[id^="spec-${targetClass}-"]`).forEach(el => el.classList.add('hidden'));
+                        document.querySelectorAll(`.spec-tab-button[data-class="${targetClass}"]`).forEach(el => el.classList.remove('active'));
+                        document.getElementById(`spec-${targetClass}-${targetSpec}`).classList.remove('hidden');
+                        button.classList.add('active');
+                    });
+                });
+            }
+
+            classSelectButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const className = button.dataset.class;
+                    classSelectButtons.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+                    displayClassDetails(className);
+                });
+            });
+
+            // Set Warrior as the default active class on page load
+            displayClassDetails('warrior');
+            document.querySelector('.class-select-button[data-class="warrior"]').classList.add('active');
+        });
+    </script>
+</body>
+</html>

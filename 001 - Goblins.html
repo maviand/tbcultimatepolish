@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Goblin Initiative - TBC Addendum</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;800&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --color-background-primary: #121212;
+            --color-background-secondary: #1E1E1E;
+            --color-text-primary: #F0F0F0;
+            --color-text-secondary: #A3A3A3;
+            --color-accent-gold: #FFD100;
+            --color-accent-goblin-green: #00FF96;
+            --color-border-light: #4A5568;
+            --color-border-dark: #2A313C;
+        }
+
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background-color: var(--color-background-primary);
+            color: var(--color-text-primary);
+            background-image: url('https://www.transparenttextures.com/patterns/dark-leather.png');
+        }
+        
+        .font-header {
+            font-family: 'Cinzel', serif;
+            letter-spacing: 0.05em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
+        }
+
+        .card {
+            background-color: rgba(30, 30, 30, 0.85);
+            backdrop-filter: blur(8px);
+            border: 1px solid var(--color-border-light);
+            border-radius: 0.75rem;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5), inset 0 0 15px rgba(0,0,0,0.4);
+        }
+        
+        .section-header {
+            border-bottom: 2px solid var(--color-accent-goblin-green);
+            padding-bottom: 0.75rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 15px -10px var(--color-accent-goblin-green);
+        }
+
+        .header-icon {
+             width: 3rem; height: 3rem; margin-right: 1rem;
+             filter: drop-shadow(0 0 8px var(--color-accent-goblin-green));
+        }
+        
+        .racial-card {
+            background: linear-gradient(145deg, #2a2a2e, #1e1e1e);
+            border-left: 4px solid var(--color-accent-goblin-green);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .racial-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(0, 255, 150, 0.2);
+        }
+
+        .details-list li {
+            position: relative;
+            padding-left: 1.5rem;
+        }
+        .details-list li::before {
+            content: '💥';
+            position: absolute;
+            left: 0;
+            top: 0;
+            color: var(--color-accent-goblin-green);
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <main class="container mx-auto px-4 py-12 md:py-16">
+
+        <!-- Header Section -->
+        <section id="vision" class="mb-16 md:mb-24 text-center">
+            <div class="flex items-center justify-center mb-6">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-20 h-20 text-[var(--color-accent-goblin-green)] filter drop-shadow-lg"><path fill-rule="evenodd" d="M8.25 7.5a.75.75 0 01.75.75v3a.75.75 0 01-1.5 0v-3a.75.75 0 01.75-.75z" clip-rule="evenodd" /><path fill-rule="evenodd" d="M9 3a.75.75 0 01.75.75v1.5a.75.75 0 01-1.5 0v-1.5A.75.75 0 019 3zM12.75 3a.75.75 0 01.75.75v1.5a.75.75 0 01-1.5 0v-1.5a.75.75 0 01.75-.75zM12 7.5a.75.75 0 01.75.75v3a.75.75 0 01-1.5 0v-3a.75.75 0 01.75-.75zM15 7.5a.75.75 0 01.75.75v3a.75.75 0 01-1.5 0v-3a.75.75 0 01.75-.75z" clip-rule="evenodd" /><path fill-rule="evenodd" d="M3 9.75a.75.75 0 01.75-.75h16.5a.75.75 0 010 1.5H3.75a.75.75 0 01-.75-.75zM3 13.5a.75.75 0 01.75-.75h16.5a.75.75 0 010 1.5H3.75a.75.75 0 01-.75-.75z" clip-rule="evenodd" /><path d="M2.25 19.5a.75.75 0 00.75.75h18a.75.75 0 00.75-.75v-3.75a.75.75 0 00-.75-.75H3a.75.75 0 00-.75.75v3.75z" /></svg>
+            </div>
+            <h1 class="text-4xl md:text-5xl font-extrabold text-gray-100 mb-4 font-header"><span class="text-[var(--color-accent-goblin-green)]">The Goblin Initiative:</span> A Proposal for Neutrality</h1>
+            <p class="max-w-4xl mx-auto text-lg text-gray-300 leading-relaxed">
+                This document presents a comprehensive design for introducing Goblins as a true Neutral race in The Burning Crusade. The core objective is to dynamically address long-standing faction imbalance, invigorate the world economy, and offer unprecedented player agency. By prioritizing profit over politics, the Goblin cartels offer their services to the highest bidder, forever changing the face of the war for Outland.
+            </p>
+        </section>
+
+        <!-- The Goblin Experience -->
+        <section id="starting-zone" class="mb-16 md:mb-24 scroll-mt-20">
+            <div class="section-header flex items-center">
+                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="header-icon"><path d="M11.25 4.533A9.707 9.707 0 006 3a9.735 9.735 0 00-3.25.555.75.75 0 00-.5.707v1.286a.75.75 0 00.75.75h2.5a.75.75 0 00.75-.75V6.01a7.22 7.22 0 012.25-.48c.32.004.635.02.94.051.306.032.59.076.86.133a.75.75 0 00.57-.912l-.433-1.298a.75.75 0 00-.912-.57zM18 3a9.735 9.735 0 013.25.555.75.75 0 01.5.707v1.286a.75.75 0 01-.75.75h-2.5a.75.75 0 01-.75-.75V6.01A7.22 7.22 0 0012.75 5.53c-.32.004-.635.02-.94.051-.306.032-.59.076-.86.133a.75.75 0 01-.57-.912l.433-1.298a.75.75 0 01.912-.57zM12 6.375a3.375 3.375 0 100 6.75 3.375 3.375 0 000-6.75zM21 9.333A9.707 9.707 0 0118 10.5a9.735 9.735 0 01-3.25-.555.75.75 0 01-.5-.707V8.026a.75.75 0 01.75-.75h2.5a.75.75 0 01.75.75v1.286a.75.75 0 01-.75.75h-1.258a7.24 7.24 0 00.94-.051.75.75 0 01.707.5l.434 1.298a.75.75 0 01-.57.912zM6 10.5a9.707 9.707 0 01-2.25-1.167.75.75 0 01-.5-.707V7.338a.75.75 0 01.75-.75h2.5a.75.75 0 01.75.75v1.286a.75.75 0 01-.75.75H5.008a7.24 7.24 0 00.94-.051.75.75 0 01.707.5l.434 1.298a.75.75 0 01-.57.912zM12 21.75a9.735 9.735 0 01-3.25-.555.75.75 0 01-.5-.707v-1.286a.75.75 0 01.75-.75h2.5a.75.75 0 01.75.75v.98a7.22 7.22 0 002.25.48c.32-.004.635-.02.94-.051.306-.032-.59-.076.86-.133a.75.75 0 01.57.912l-.433 1.298a.75.75 0 01-.912.57 9.707 9.707 0 01-2.25 1.167z" /></svg>
+                <h2 class="text-3xl md:text-4xl font-bold font-header"><span class="text-[var(--color-accent-goblin-green)]">The Goblin Experience:</span> Birth of an Entrepreneur</h2>
+            </div>
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="card p-6">
+                    <h3 class="font-bold text-2xl mb-3 text-[var(--color-accent-goblin-green)] font-header">Starting Zone: Isle of Kezan (Levels 1-12) 🌋</h3>
+                    <div class="text-sm space-y-3 text-gray-300 leading-relaxed">
+                        <p>Players begin their journey amidst the polluted, hyper-capitalist paradise of Kezan. The narrative kicks off not with a noble calling, but with the cataclysmic eruption of Mount Kajaro. The starting experience is a frantic, hilarious escape from the island, driven by one motivation: saving your own skin (and your investment portfolio).</p>
+                        <h4 class="font-semibold text-base text-amber-300 pt-2">Narrative Arc:</h4>
+                        <ul class="list-disc list-inside space-y-2 pl-2 details-list">
+                           <li><strong>The Boom:</strong> Witness the eruption of Mount Kajaro. The first quest is simply "Get Out Alive!", setting a tone of chaotic self-preservation.</li>
+                           <li><strong>Hostile Takeover:</strong> Key quests involve collecting outstanding debts, "repossessing" essential hardware for an escape rocket, and sabotaging rival entrepreneurs' escape plans.</li>
+                           <li><strong>The Gallywix Betrayal:</strong> Secure a spot on Trade Prince Gallywix's personal yacht, only to be enslaved and forced to pay an exorbitant fee for your own rescue before being shipwrecked.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="card p-6">
+                    <h3 class="font-bold text-2xl mb-3 text-[var(--color-accent-goblin-green)] font-header">The Allegiance Choice: The Lost Isles (Levels 12-20) 🏝️</h3>
+                    <div class="text-sm space-y-3 text-gray-300 leading-relaxed">
+                        <p>On the Lost Isles, stranded Goblins quickly find themselves caught between Alliance and Horde forces, both of whom see the Goblins' technical expertise as a valuable asset. This zone serves as the crucible where players make their permanent faction choice.</p>
+                         <h4 class="font-semibold text-base text-amber-300 pt-2">Narrative Arc:</h4>
+                        <ul class="list-disc list-inside space-y-2 pl-2 details-list">
+                           <li><strong>The First Offer:</strong> Emissaries from both factions arrive, offering rescue and resources in exchange for loyalty. Players undertake introductory quests for both sides, getting a feel for their ethos.</li>
+                           <li><strong>A Business Proposal:</strong> The culminating quest, "Signing the Contract," forces the player to permanently align with either the Horde or the Alliance. This choice determines their capital city, questlines, and reputation paths for the rest of their journey. The decision is framed as the biggest business deal of their lives.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Goblin Society & Hubs -->
+        <section id="society" class="mb-16 md:mb-24 scroll-mt-20">
+            <div class="section-header flex items-center">
+                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="header-icon"><path d="M12.75 12.75a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" /><path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zM11.25 7.5a.75.75 0 100 1.5h1.5a.75.75 0 100-1.5h-1.5zM12 15a.75.75 0 01.75.75v1.5a.75.75 0 01-1.5 0v-1.5A.75.75 0 0112 15z" clip-rule="evenodd" /></svg>
+                <h2 class="text-3xl md:text-4xl font-bold font-header"><span class="text-[var(--color-accent-goblin-green)]">Goblin Society:</span> Commerce & Chaos</h2>
+            </div>
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="card p-6">
+                    <h3 class="font-bold text-2xl mb-3 text-[var(--color-accent-goblin-green)] font-header">Major Cartels & Capitals 🏙️</h3>
+                     <p class="text-sm text-gray-300 mb-4 leading-relaxed">Goblin society is fractured into several rival Trade Cartels, each with its own philosophy.</p>
+                    <ul class="list-disc list-inside text-sm text-gray-300 space-y-2 pl-2">
+                        <li><strong>The Bilgewater Cartel (Playable):</strong> Led by the opulent and ruthless Trade Prince Gallywix. Having lost their neutrality in the shipwreck, they align with a major faction out of necessity. Their capital is the sprawling, industrial port of <strong>Bilgewater Harbor</strong> in Azshara.</li>
+                        <li><strong>The Steamwheedle Cartel (Neutral):</strong> The largest and most established cartel, controlling cities like Gadgetzan, Booty Bay, Everlook, and Ratchet. They are the architects of true neutrality and the engine of the cross-faction economy.</li>
+                    </ul>
+                </div>
+                <div class="card p-6">
+                    <h3 class="font-bold text-2xl mb-3 text-[var(--color-accent-goblin-green)] font-header">The Neutral Trade Network ⚖️</h3>
+                    <p class="text-sm text-gray-300 mb-4 leading-relaxed">While individual Goblins pledge allegiance, the Steamwheedle Cartel remains strictly neutral. Cities like Gadgetzan and Booty Bay are expanded into true sanctuaries, offering unique services and housing the revolutionary Cross-Faction Bazaar.</p>
+                    <div class="bg-gray-800/50 p-4 rounded-lg">
+                        <h4 class="font-semibold text-lg text-amber-300 mb-2">Cross-Faction Bazaar Mechanics:</h4>
+                        <ul class="list-disc list-inside text-sm text-gray-300 space-y-1 details-list">
+                            <li>Hosted only in Gadgetzan, run by the Steamwheedle Cartel.</li>
+                            <li>Only Goblin characters (of either faction) can post auctions and place buy orders.</li>
+                            <li>Characters of any race can purchase items, breaking economic barriers.</li>
+                            <li>The Cartel takes a hefty "convenience fee" (e.g., 20% cut) on all transactions, creating a massive gold sink to help regulate the server economy.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Available Classes -->
+        <section id="classes" class="mb-16 md:mb-24 scroll-mt-20">
+            <div class="section-header flex items-center">
+                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="header-icon"><path d="M16.5 7.5h-9v9h9v-9z" /><path fill-rule="evenodd" d="M4.5 3A1.5 1.5 0 003 4.5v15A1.5 1.5 0 004.5 21h15a1.5 1.5 0 001.5-1.5v-15A1.5 1.5 0 0019.5 3h-15zm-1.5 1.5a.75.75 0 01.75-.75h15a.75.75 0 01.75.75v15a.75.75 0 01-.75.75h-15a.75.75 0 01-.75-.75v-15z" clip-rule="evenodd" /></svg>
+                <h2 class="text-3xl md:text-4xl font-bold font-header"><span class="text-[var(--color-accent-goblin-green)]">Available Classes:</span> A Mercenary's Portfolio</h2>
+            </div>
+            <p class="text-center text-gray-300 max-w-4xl mx-auto mb-10 leading-relaxed">
+                A Goblin's choice of profession is, like everything else, a matter of practicality and profit. They gravitate towards roles that offer tangible rewards, explosive results, or cunning advantages.
+            </p>
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="card p-6"><strong>Warrior 🛡️:</strong> A deal's a deal, and sometimes the fine print requires getting your hands dirty. Bodyguard work and "aggressive negotiations" pay well.</div>
+                <div class="card p-6"><strong>Hunter 🏹:</strong> Technological superiority. Why use a flimsy bow when you can have a high-caliber, long-range rifle? Plus, exotic beasts fetch a high price.</div>
+                <div class="card p-6"><strong>Rogue 🗡️:</strong> Corporate espionage, sabotage, and asset acquisition are just fancy terms for a Rogue's Tuesday. It's the cornerstone of Goblin commerce.</div>
+                <div class="card p-6"><strong>Priest 🙏:</strong> Faith is a commodity. Whether it's selling dubious blessings or wielding the shadows for insider trading, there's profit in the spiritual realm.</div>
+                <div class="card p-6"><strong>Shaman ⚡:</strong> The elements are just another resource to be exploited. A Shaman makes binding contracts with elemental spirits for explosive results. It's all about negotiation.</div>
+                <div class="card p-6"><strong>Mage 🧙:</strong> Arcane knowledge is power, and power is money. Goblins see magic as the ultimate tool for invention, transportation, and vaporizing competition.</div>
+                <div class="card p-6"><strong>Warlock 😈:</strong> Why bargain with elementals when you can get demons to work for free? A Warlock's contract with a demon is the ultimate binding agreement with no overhead.</div>
+            </div>
+        </section>
+
+        <!-- Racial Abilities -->
+        <section id="racials" class="mb-16 md:mb-24 scroll-mt-20">
+            <div class="section-header flex items-center">
+                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="header-icon"><path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zM12.75 6a.75.75 0 00-1.5 0v6c0 .414.336.75.75.75h4.5a.75.75 0 000-1.5h-3.75V6z" clip-rule="evenodd" /></svg>
+                <h2 class="text-3xl md:text-4xl font-bold font-header"><span class="text-[var(--color-accent-goblin-green)]">Racial Traits:</span> An Explosive Toolkit</h2>
+            </div>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="card racial-card p-6">
+                    <h4 class="font-bold text-lg text-gray-100 mb-2">🚀 Rocket Jump</h4>
+                    <p class="text-sm text-gray-300">Instantly leaps forward. A crucial mobility tool for closing gaps or escaping danger. (2-min cooldown)</p>
+                    <p class="text-xs text-gray-400 mt-2 italic"><strong>Rationale:</strong> The iconic Goblin escape plan. Perfect for getting out of (or into) trouble quickly.</p>
+                </div>
+                 <div class="card racial-card p-6">
+                    <h4 class="font-bold text-lg text-gray-100 mb-2">💣 Rocket Barrage</h4>
+                    <p class="text-sm text-gray-300">Launches a volley of rockets at an enemy, dealing fire damage. Shares a cooldown with Rocket Jump.</p>
+                     <p class="text-xs text-gray-400 mt-2 italic"><strong>Rationale:</strong> The offensive alternative to a hasty retreat. Sometimes the best solution is more explosions.</p>
+                </div>
+                <div class="card racial-card p-6">
+                    <h4 class="font-bold text-lg text-gray-100 mb-2">⏱️ Time is Money</h4>
+                    <p class="text-sm text-gray-300">Passive 1% increase to attack and casting speed.</p>
+                    <p class="text-xs text-gray-400 mt-2 italic"><strong>Rationale:</strong> Represents the Goblins' frantic, fast-paced approach to everything. Efficiency is profit!</p>
+                </div>
+                <div class="card racial-card p-6">
+                    <h4 class="font-bold text-lg text-gray-100 mb-2">💰 Best Deals Anywhere</h4>
+                    <p class="text-sm text-gray-300">Passive. Always receive the best possible discount from any vendor, regardless of reputation.</p>
+                    <p class="text-xs text-gray-400 mt-2 italic"><strong>Rationale:</strong> A Goblin's natural haggling talent, hard-coded into their DNA. Why pay full price?</p>
+                </div>
+                <div class="card racial-card p-6">
+                    <h4 class="font-bold text-lg text-gray-100 mb-2">⚗️ Better Living Through Chemistry</h4>
+                    <p class="text-sm text-gray-300">Passive +15 skill bonus to Alchemy.</p>
+                    <p class="text-xs text-gray-400 mt-2 italic"><strong>Rationale:</strong> Goblins have a natural affinity for volatile chemicals and profitable potions.</p>
+                </div>
+                <div class="card racial-card p-6">
+                    <h4 class="font-bold text-lg text-gray-100 mb-2">📦 Pack Hobgoblin</h4>
+                    <p class="text-sm text-gray-300">Calls a personal hobgoblin servant, allowing bank access from anywhere. (30-min cooldown)</p>
+                    <p class="text-xs text-gray-400 mt-2 italic"><strong>Rationale:</strong> The ultimate convenience for an entrepreneur on the go. Access your assets anytime, anywhere.</p>
+                </div>
+            </div>
+        </section>
+        
+    </main>
+
+    <footer class="bg-[--color-background-primary] text-white border-t border-t-gray-800">
+        <div class="container mx-auto px-4 py-6 text-center text-sm">
+            <p>This interactive report is a conceptual visualization of "The Ultimate Polish" proposal addendum. All content is derived from the source document for illustrative purposes.</p>
+            <p class="mt-2 text-xs text-gray-300">&copy; 2025. Not affiliated with Blizzard Entertainment. World of Warcraft is a trademark of Blizzard Entertainment.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+             // Expandable Cards
+            function setupExpandableCards() {
+                document.querySelectorAll('.expandable-card').forEach(card => {
+                     card.addEventListener('click', function(event) {
+                        if (event.target.closest('button')) return;
+                        const details = this.querySelector('.details');
+                        if (details) {
+                            details.classList.toggle('hidden');
+                        }
+                    });
+                });
+            }
+            setupExpandableCards();
+        });
+    </script>
+</body>
+</html>

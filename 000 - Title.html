@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>World of Warcraft: The Burning Crusade - The Ultimate Polish</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Cinzel for headers, Open Sans for body -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        /* * WoW-Themed Styling
+         * This CSS block transforms the page to look like a part of the World of Warcraft universe.
+         * It includes colors, fonts, shadows, and interactive effects.
+         */
+        
+        :root {
+            --wow-gold: #F8B700;
+            --wow-gold-light: #ffc95e;
+            --wow-text-parchment: #C7B377;
+            --wow-fel-green: #00FF96;
+            --wow-arcane-blue: #66ccff;
+        }
+
+        /* Font Definitions */
+        .font-wow-header {
+            font-family: 'Cinzel', serif;
+        }
+        .font-wow-body {
+            font-family: 'Open Sans', sans-serif;
+        }
+
+        /* Full-screen background with a dark, textured overlay */
+        body {
+            /* New, more thematic background image */
+            background-image: url('https://images.blz-contentstack.com/v3/assets/blt3452e3b114fab05b/blt79a8e792c6e61899/6165ef583627d34aa88293d0/tbc-bg-lg.jpg');
+            background-size: cover;
+            background-position: center center;
+            background-attachment: fixed;
+            background-color: #050505;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: rgba(0, 0, 0, 0.6); /* Slightly less dim overlay */
+            backdrop-filter: blur(2px);
+            z-index: -1;
+        }
+        
+        /* Interactive mouse light effect */
+        #mouse-light {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            background: radial-gradient(circle 400px at center, rgba(248, 183, 0, 0.1), transparent);
+            pointer-events: none;
+            transition: transform 0.1s ease-out;
+            z-index: 0;
+        }
+
+        /* Canvas for particle effects */
+        #particle-canvas {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+        
+        /* Ensure content is above the background effects */
+        .content-wrapper {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Main title styling with enhanced text shadow */
+        .main-title {
+            letter-spacing: 0.1em;
+        }
+        .main-title > span {
+             text-shadow: 3px 3px 0 #000, 
+                         -1px -1px 0 #000, 1px -1px 0 #000,
+                         -1px 1px 0 #000, 1px 1px 0 #000,
+                         5px 5px 12px rgba(0,0,0,0.9);
+        }
+
+        /* Card styling with border image and shadows */
+        .wow-card {
+            background: rgba(15, 10, 5, 0.8);
+            backdrop-filter: blur(10px);
+            border: 2px solid;
+            border-image-source: linear-gradient(to bottom, #785a28, #c8aa6e);
+            border-image-slice: 1;
+            box-shadow: 0 0 15px rgba(0,0,0,0.7), inset 0 0 10px rgba(0,0,0,0.5);
+            transition: all 0.3s ease-in-out;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Enhanced hover effect with a bright glow */
+        .wow-card:hover {
+            transform: translateY(-8px) scale(1.03);
+            box-shadow: 0 0 30px rgba(248, 183, 0, 0.6), inset 0 0 15px rgba(0,0,0,0.5);
+            border-image-source: linear-gradient(to bottom, #c8aa6e, var(--wow-gold));
+        }
+
+        .wow-card-title {
+            color: var(--wow-gold-light);
+            text-shadow: 2px 2px 4px #000;
+        }
+
+        .wow-card-body {
+            flex-grow: 1;
+        }
+        
+        .learn-more {
+             color: var(--wow-arcane-blue);
+             text-shadow: 1px 1px 2px rgba(0,0,0,0.7);
+             transition: color 0.2s ease, text-shadow 0.2s ease;
+        }
+        .wow-card:hover .learn-more {
+            color: white;
+            text-shadow: 0 0 8px var(--wow-arcane-blue);
+        }
+    </style>
+</head>
+<body class="font-wow-body bg-gray-900 text-gray-200 antialiased">
+
+    <!-- Background Effects -->
+    <div id="mouse-light"></div>
+    <canvas id="particle-canvas"></canvas>
+
+    <!-- Main Container -->
+    <div class="content-wrapper container mx-auto px-4 sm:px-6 py-12 md:py-20">
+
+        <!-- Header Section -->
+        <header class="text-center mb-12 md:mb-16">
+            <!-- Updated Title Structure -->
+            <h1 class="main-title font-wow-header text-5xl md:text-6xl font-extrabold leading-tight">
+                <span class="text-[var(--wow-gold)]">World of Warcraft</span>
+                <span class="block text-white text-4xl md:text-5xl mt-1">The Burning Crusade</span>
+                <span class="block text-white text-2xl md:text-3xl mt-2 opacity-90">The Ultimate Polish</span>
+            </h1>
+            <p class="max-w-4xl mx-auto text-base md:text-lg text-amber-100/80 mt-8 leading-relaxed bg-black/40 p-4 rounded-lg border border-amber-900/50 shadow-lg">
+                This proposal integrates extensive community feedback with innovative design to deliver the most engaging, balanced, and rewarding TBC experience possible. It focuses on strategic modernization, transforming tedious grinds into dynamic encounters, achieving holistic class balance, and revitalizing the entire world of Azeroth. Our goal is to achieve a comprehensive balance across classes and specializations, ensuring every specialization offers unique, valuable utility and a compelling gameplay experience. This iteration prioritizes player agency, allowing you to choose your level of modernization.
+            </p>
+        </header>
+
+        <!-- Links Grid -->
+        <main class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+
+            <!-- Card 1: Goblins -->
+            <a href="./001 - Goblins.html" class="wow-card block p-6 rounded-lg cursor-pointer">
+                <div class="wow-card-body">
+                    <h2 class="wow-card-title font-wow-header text-xl font-bold mb-2">🚀 Goblins</h2>
+                    <p class="text-[var(--wow-text-parchment)] text-sm">A proposal for introducing Goblins as a neutral race, their society, and their explosive impact on Azeroth.</p>
+                </div>
+                <p class="learn-more font-bold mt-4">Learn More &rarr;</p>
+            </a>
+
+            <!-- Card 2: Classes & Specs -->
+            <a href="./002 - Classes & Specs.html" class="wow-card block p-6 rounded-lg cursor-pointer">
+                 <div class="wow-card-body">
+                    <h2 class="wow-card-title font-wow-header text-xl font-bold mb-2">✨ Classes & Specs</h2>
+                    <p class="text-[var(--wow-text-parchment)] text-sm">A deep dive into balance refinements, talent polish, and modern enhancements for every class and specialization.</p>
+                </div>
+                <p class="learn-more font-bold mt-4">Learn More &rarr;</p>
+            </a>
+
+            <!-- Card 3: Raids -->
+            <a href="./003 - Raids.html" class="wow-card block p-6 rounded-lg cursor-pointer">
+                 <div class="wow-card-body">
+                    <h2 class="wow-card-title font-wow-header text-xl font-bold mb-2">🐉 Raids & Dungeons</h2>
+                    <p class="text-[var(--wow-text-parchment)] text-sm">Experience reimagined raids and dungeons, from a dynamic Mount Hyjal to a treacherous Black Temple.</p>
+                </div>
+                <p class="learn-more font-bold mt-4">Learn More &rarr;</p>
+            </a>
+
+            <!-- Card 4: Professions -->
+            <a href="./004 - Professions.html" class="wow-card block p-6 rounded-lg cursor-pointer">
+                <div class="wow-card-body">
+                    <h2 class="wow-card-title font-wow-header text-xl font-bold mb-2">🛠️ Professions</h2>
+                    <p class="text-[var(--wow-text-parchment)] text-sm">Discover overhauled professions with unique utility, epic crafting quests, and new masterwork items.</p>
+                </div>
+                <p class="learn-more font-bold mt-4">Learn More &rarr;</p>
+            </a>
+
+            <!-- Card 5: Old World Relevance -->
+            <a href="./005 - Old World Relevance.html" class="wow-card block p-6 rounded-lg cursor-pointer">
+                <div class="wow-card-body">
+                    <h2 class="wow-card-title font-wow-header text-xl font-bold mb-2">🌍 Old World Relevance</h2>
+                    <p class="text-[var(--wow-text-parchment)] text-sm">Journey back to a revitalized Azeroth with level 70 heroic content, new world events, and paragon reputations.</p>
+                </div>
+                <p class="learn-more font-bold mt-4">Learn More &rarr;</p>
+            </a>
+
+            <!-- Card 6: Legendaries & Pinnacle -->
+            <a href="./006 - Legendaries & Pinnacle.html" class="wow-card block p-6 rounded-lg cursor-pointer">
+                <div class="wow-card-body">
+                    <h2 class="wow-card-title font-wow-header text-xl font-bold mb-2">⚔️ Legendaries & Pinnacle</h2>
+                    <p class="text-[var(--wow-text-parchment)] text-sm">Embark on epic journeys to forge legendary items and complete Pinnacle Quests for unique rewards.</p>
+                </div>
+                <p class="learn-more font-bold mt-4">Learn More &rarr;</p>
+            </a>
+
+            <!-- Card 7: Guilds -->
+            <a href="./007 - Guilds.html" class="wow-card block p-6 rounded-lg cursor-pointer">
+                <div class="wow-card-body">
+                    <h2 class="wow-card-title font-wow-header text-xl font-bold mb-2">🏰 Guilds</h2>
+                    <p class="text-[var(--wow-text-parchment)] text-sm">Forge a powerful community with guild halls, weekly challenges, and dynamic world content for your guild.</p>
+                </div>
+                <p class="learn-more font-bold mt-4">Learn More &rarr;</p>
+            </a>
+
+            <!-- Card 8: Factions Balance & QoL -->
+            <a href="./008 - Factions Balance & QoL.html" class="wow-card block p-6 rounded-lg cursor-pointer">
+                <div class="wow-card-body">
+                    <h2 class="wow-card-title font-wow-header text-xl font-bold mb-2">⚖️ Balance & QoL</h2>
+                    <p class="text-[var(--wow-text-parchment)] text-sm">Explore targeted adjustments for faction parity and major quality-of-life upgrades to modernize the TBC experience.</p>
+                </div>
+                <p class="learn-more font-bold mt-4">Learn More &rarr;</p>
+            </a>
+
+        </main>
+
+        <!-- Footer -->
+        <footer class="text-center mt-12 md:mt-16 text-amber-100/50">
+            <p>This proposal is a conceptual design and not affiliated with Blizzard Entertainment. &copy; 2024</p>
+        </footer>
+
+    </div>
+
+    <script>
+        // --- Interactive Effects Script ---
+
+        // 1. Mouse Light Effect
+        const mouseLight = document.getElementById('mouse-light');
+        document.addEventListener('mousemove', (e) => {
+            // This moves the light effect to the cursor's position.
+            // Using transform is more performant than changing top/left.
+            mouseLight.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
+        });
+
+        // 2. Particle Canvas Effect
+        const canvas = document.getElementById('particle-canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        let particlesArray;
+
+        // Particle Object
+        class Particle {
+            constructor(x, y, directionX, directionY, size, color) {
+                this.x = x;
+                this.y = y;
+                this.directionX = directionX;
+                this.directionY = directionY;
+                this.size = size;
+                this.color = color;
+            }
+
+            // Method to draw individual particle
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false);
+                ctx.fillStyle = this.color;
+                ctx.fill();
+            }
+
+            // Method to update particle position
+            update() {
+                if (this.x > canvas.width || this.x < 0) {
+                    this.directionX = -this.directionX;
+                }
+                if (this.y > canvas.height || this.y < 0) {
+                    this.directionY = -this.directionY;
+                }
+                this.x += this.directionX;
+                this.y += this.directionY;
+                this.draw();
+            }
+        }
+
+        // Create particle array
+        function init() {
+            particlesArray = [];
+            // Adjust particle count based on screen size for better performance
+            let numberOfParticles = (canvas.height * canvas.width) / 9000;
+            for (let i = 0; i < numberOfParticles; i++) {
+                let size = (Math.random() * 2) + 1;
+                let x = (Math.random() * ((innerWidth - size * 2) - (size * 2)) + size * 2);
+                let y = (Math.random() * ((innerHeight - size * 2) - (size * 2)) + size * 2);
+                let directionX = (Math.random() * .4) - .2;
+                let directionY = (Math.random() * .4) - .2;
+                let color = 'rgba(248, 183, 0, 0.4)'; // Faint gold color
+
+                particlesArray.push(new Particle(x, y, directionX, directionY, size, color));
+            }
+        }
+
+        // Animation loop
+        function animate() {
+            requestAnimationFrame(animate);
+            ctx.clearRect(0, 0, innerWidth, innerHeight);
+
+            for (let i = 0; i < particlesArray.length; i++) {
+                particlesArray[i].update();
+            }
+        }
+
+        // Resize event
+        window.addEventListener('resize', () => {
+            canvas.width = innerWidth;
+            canvas.height = innerHeight;
+            init();
+        });
+
+        // Start animation
+        init();
+        animate();
+    </script>
+</body>
+</html>

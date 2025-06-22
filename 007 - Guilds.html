@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Guild Initiative - TBC Polish Addendum</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;800&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --color-background-primary: #101828; /* Deep Midnight Blue */
+            --color-background-secondary: #1D2939; /* Dark Steel Blue */
+            --color-text-primary: #F8F9FA; /* Off-White/Silver */
+            --color-text-secondary: #98A2B3; /* Slate Grey */
+            --color-accent-blue: #5E9DFF; /* Bright Alliance Blue */
+            --color-accent-gold: #FFD700; /* Gold */
+            --color-border: #344054;
+        }
+
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background-color: var(--color-background-primary);
+            color: var(--color-text-primary);
+            background-image: url('https://www.transparenttextures.com/patterns/clean-textile.png');
+        }
+        
+        .font-header {
+            font-family: 'Cinzel', serif;
+            letter-spacing: 0.05em;
+            text-shadow: 1px 1px 6px rgba(0, 0, 0, 0.6);
+        }
+
+        .card {
+            background-color: var(--color-background-secondary);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--color-border);
+            border-radius: 0.5rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.6), 0 0 20px rgba(94, 157, 255, 0.3);
+        }
+        
+        .section-header {
+            border-bottom: 2px solid var(--color-accent-blue);
+            padding-bottom: 0.75rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 15px -10px var(--color-accent-blue);
+        }
+
+        .header-icon {
+             width: 3rem; height: 3rem; margin-right: 1rem;
+             filter: drop-shadow(0 0 8px var(--color-accent-blue));
+        }
+
+        .details-list li {
+            position: relative;
+            padding-left: 1.75rem;
+            margin-bottom: 0.5rem;
+        }
+        .details-list li::before {
+            content: '⚜️'; /* Fleur-de-lis for Alliance theme */
+            position: absolute;
+            left: 0;
+            top: 1px;
+            color: var(--color-accent-blue);
+            font-size: 1.1em;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <main class="container mx-auto px-4 py-12 md:py-16">
+
+        <!-- Header Section -->
+        <section id="vision" class="mb-16 md:mb-24 text-center">
+            <div class="flex items-center justify-center mb-6">
+                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-20 h-20 text-[var(--color-accent-blue)] filter drop-shadow-lg"><path fill-rule="evenodd" d="M12.963 2.286a.75.75 0 00-1.071 1.052A3.75 3.75 0 0113.5 10.5h-3a.75.75 0 00-1.071-1.052 3.75 3.75 0 01-1.962-3.152.75.75 0 00-1.465-.335 5.25 5.25 0 003.498 4.417A2.25 2.25 0 0110.5 15h3a.75.75 0 001.071 1.052 3.75 3.75 0 011.962 3.152.75.75 0 001.465.335 5.25 5.25 0 00-3.498-4.417A2.25 2.25 0 0113.5 9h-3a.75.75 0 00-1.071 1.052 3.75 3.75 0 01-1.962 3.152.75.75 0 00-.035 1.465 5.25 5.25 0 004.417-3.498A2.25 2.25 0 0113.5 12h3a.75.75 0 001.071-1.052 3.75 3.75 0 011.962-3.152.75.75 0 00.035-1.465 5.25 5.25 0 00-4.417 3.498A2.25 2.25 0 0110.5 9h3a.75.75 0 001.071-1.052A3.75 3.75 0 0113.5 4.5h-3a.75.75 0 00-1.071-1.052 3.75 3.75 0 01-1.962-3.152.75.75 0 00-1.465-.335 5.25 5.25 0 003.498 4.417A2.25 2.25 0 0110.5 6h3a.75.75 0 001.071-1.052A3.75 3.75 0 0113.5 1.5h-3a.75.75 0 00-1.071-1.052 3.75 3.75 0 01-1.962-3.152.75.75 0 00-1.465-.335A5.25 5.25 0 006 5.25a5.25 5.25 0 005.25 5.25 5.25 5.25 0 005.25-5.25 5.25 5.25 0 00-3.498-4.964z" clip-rule="evenodd" /></svg>
+            </div>
+            <h1 class="text-4xl md:text-5xl font-extrabold text-white mb-4 font-header"><span class="text-[var(--color-accent-blue)]">The Guild Initiative:</span> Forging Communities</h1>
+            <p class="max-w-4xl mx-auto text-lg text-gray-300 leading-relaxed">
+                This design addendum focuses on the social and structural heart of World of Warcraft: the guild. To foster stronger communities and provide meaningful, long-term collective goals, we propose a robust Guild Progression system. This includes a physical, evolving Guild Hall, engaging weekly challenges, and dynamic world content that gives guilds a tangible impact on the world around them.
+            </p>
+        </section>
+
+        <!-- Guild Hall Section -->
+        <section id="guild-hall" class="mb-16 md:mb-24 scroll-mt-20">
+            <div class="section-header flex items-center">
+                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="header-icon"><path d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zM12.75 9a.75.75 0 00-1.5 0v2.25H9a.75.75 0 000 1.5h2.25V15a.75.75 0 001.5 0v-2.25H15a.75.75 0 000-1.5h-2.25V9z" /></svg>
+                <h2 class="text-3xl md:text-4xl font-bold font-header"><span class="text-[var(--color-accent-blue)]">Outland Guild Hall:</span> A Home in a Broken World 🏰</h2>
+            </div>
+            <div class="card p-8">
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div>
+                        <h3 class="font-bold text-2xl mb-4 text-[var(--color-accent-gold)] font-header">Establishment & Progression</h3>
+                        <div class="text-sm space-y-3 text-gray-300 leading-relaxed">
+                            <p>Guilds can establish a phased, instanced Guild Hall in a contested zone like Hellfire Peninsula or Nagrand. The hall begins as a humble encampment and evolves into a formidable fortress through guild-wide effort.</p>
+                             <h4 class="font-semibold text-base text-white pt-2">Unlock Path:</h4>
+                             <ul class="details-list pl-2 mt-2">
+                                <li><strong>Initial Quest:</strong> Once a guild reaches a certain size and a majority of members are level 70, the Guild Master can start a quest chain ("Foundation of Unity") from their faction leader in Shattrath.</li>
+                                <li><strong>Tiered Upgrades:</strong> The hall is upgraded through a new "Guild Reputation" metric, earned by completing Weekly Guild Challenges. Tiers unlock at Honored, Revered, and Exalted.</li>
+                            </ul>
+                        </div>
+                    </div>
+                     <div>
+                        <h3 class="font-bold text-2xl mb-4 text-[var(--color-accent-gold)] font-header">Tiered Features & Perks</h3>
+                        <div class="text-sm space-y-3 text-gray-300 leading-relaxed">
+                             <p>Each tier physically expands the Guild Hall and unlocks new, valuable perks for all members.</p>
+                             <h4 class="font-semibold text-base text-white pt-2">Perk Progression:</h4>
+                             <ul class="details-list pl-2 mt-2">
+                                <li><strong>Tier 1 (Honored):</strong> Grants access to multiple Guild Bank tabs, a guild-specific Mailbox, and a minor rested XP bonus within the hall.</li>
+                                <li><strong>Tier 2 (Revered):</strong> Unlocks profession stations (Forge, Anvil, etc.) that offer small bonuses, like a reduced cooldown on specialized crafts. Adds a cosmetic Guild Banner to plant in raids.</li>
+                                <li><strong>Tier 3 (Exalted):</strong> Unlocks a shared stable with cosmetic Guild Mounts (e.g., armored Gryphons/Wyverns with the guild tabard), and allows the Guild Banner to grant a choice of minor combat buffs once per week.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Guild Challenges Section -->
+        <section id="guild-challenges" class="mb-16 md:mb-24 scroll-mt-20">
+            <div class="section-header flex items-center">
+                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="header-icon"><path d="M12.75 3.75a.75.75 0 00-1.5 0v1.5h-1.5a.75.75 0 000 1.5h1.5v1.5a.75.75 0 001.5 0v-1.5h1.5a.75.75 0 000-1.5h-1.5v-1.5z" /><path fill-rule="evenodd" d="M12 1.5a5.25 5.25 0 00-5.25 5.25v3a3 3 0 00-2.25 2.75.75.75 0 001.5 0 1.5 1.5 0 011.5-1.5h8.25a1.5 1.5 0 011.5 1.5.75.75 0 001.5 0 3 3 0 00-2.25-2.75v-3A5.25 5.25 0 0012 1.5zm-3.75 7.5a3 3 0 003 3h1.5a3 3 0 003-3v-3a3.75 3.75 0 10-7.5 0v3z" clip-rule="evenodd" /></svg>
+                <h2 class="text-3xl md:text-4xl font-bold font-header"><span class="text-[var(--color-accent-blue)]">Weekly Guild Challenges:</span> Unity Through Action 🏆</h2>
+            </div>
+             <p class="text-center text-gray-300 max-w-4xl mx-auto mb-10 leading-relaxed">
+                To promote active, group-oriented gameplay, a new "Guild Challenges" panel is added to the guild UI. These weekly, repeatable objectives encourage members to work together across all forms of content, rewarding the entire guild for their collective success.
+            </p>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="card p-6">
+                    <h3 class="font-bold text-xl mb-3 text-white font-header">PvE Conquests ⚔️</h3>
+                    <p class="text-sm text-gray-300 mb-4">Objectives focused on dungeon and raid content.</p>
+                    <ul class="text-sm text-gray-300 space-y-2 details-list">
+                        <li>Complete a full clear of Karazhan.</li>
+                        <li>Defeat 15 Heroic dungeon bosses.</li>
+                        <li>Slay a specific world boss (e.g., Doom Lord Kazzak).</li>
+                    </ul>
+                </div>
+                 <div class="card p-6">
+                    <h3 class="font-bold text-xl mb-3 text-white font-header">World Engagement 🌍</h3>
+                    <p class="text-sm text-gray-300 mb-4">Objectives that drive interaction with the game world.</p>
+                     <ul class="text-sm text-gray-300 space-y-2 details-list">
+                        <li>Successfully escort 3 Supply Caravans in contested zones.</li>
+                        <li>Contribute to closing a Felstorm Rift.</li>
+                        <li>Complete 50 daily quests as a guild.</li>
+                    </ul>
+                </div>
+                 <div class="card p-6">
+                    <h3 class="font-bold text-xl mb-3 text-white font-header">Rewards & Recognition 🏅</h3>
+                    <p class="text-sm text-gray-300 mb-4">Completing challenges grants significant rewards.</p>
+                     <ul class="text-sm text-gray-300 space-y-2 details-list">
+                        <li>Awards Guild Reputation to level up the Guild Hall.</li>
+                        <li>Grants a cache of gold and materials to the guild bank.</li>
+                        <li>Unlocks unique guild-wide cosmetic rewards and titles.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Dynamic World Content Section -->
+        <section id="world-content" class="scroll-mt-20">
+            <div class="section-header flex items-center">
+                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="header-icon"><path fill-rule="evenodd" d="M12.963 2.286a.75.75 0 00-1.071 1.052A3.75 3.75 0 0113.5 10.5h-3a.75.75 0 00-1.071-1.052 3.75 3.75 0 01-1.962-3.152.75.75 0 00-1.465-.335 5.25 5.25 0 003.498 4.417A2.25 2.25 0 0110.5 15h3a.75.75 0 001.071 1.052 3.75 3.75 0 011.962 3.152.75.75 0 001.465.335 5.25 5.25 0 00-3.498-4.417A2.25 2.25 0 0113.5 9h-3a.75.75 0 00-1.071 1.052 3.75 3.75 0 01-1.962 3.152.75.75 0 00-.035 1.465 5.25 5.25 0 004.417-3.498A2.25 2.25 0 0113.5 12h3a.75.75 0 001.071-1.052 3.75 3.75 0 011.962-3.152.75.75 0 00.035-1.465 5.25 5.25 0 00-4.417 3.498A2.25 2.25 0 0110.5 9h3a.75.75 0 001.071-1.052A3.75 3.75 0 0113.5 4.5h-3a.75.75 0 00-1.071-1.052 3.75 3.75 0 01-1.962-3.152.75.75 0 00-1.465-.335A5.25 5.25 0 006 5.25a5.25 5.25 0 005.25 5.25 5.25 5.25 0 005.25-5.25 5.25 5.25 0 00-3.498-4.964z" clip-rule="evenodd" /></svg>
+                <h2 class="text-3xl md:text-4xl font-bold font-header"><span class="text-[var(--color-accent-blue)]">Dynamic World Content:</span> A Living Battlefield 🔥</h2>
+            </div>
+             <p class="text-center text-gray-300 max-w-4xl mx-auto mb-10 leading-relaxed">
+                To make the world feel more alive and give guilds a direct impact, new dynamic, cross-faction events are introduced. These events are designed to create spontaneous PvP and cooperative PvE scenarios.
+            </p>
+            <div class="space-y-8">
+                <div class="card p-6">
+                    <h3 class="font-bold text-xl mb-3 text-white font-header">Felstorm Rift Events 🌪️</h3>
+                    <p class="text-sm text-gray-300">Randomly spawning portals in Outland zones that vomit forth waves of demons. Both factions can compete to close the rift first. The winning faction's members gain a temporary flight path shortcut and bonus badges. During the final sealing ritual, the area becomes a free-for-all PvP zone as the opposing faction can attempt to disrupt the ritual and steal the rewards.</p>
+                </div>
+                <div class="card p-6">
+                    <h3 class="font-bold text-xl mb-3 text-white font-header">Supply Caravan Skirmishes 📦</h3>
+                    <p class="text-sm text-gray-300">NPC caravans carrying valuable "Badge Shipments" traverse contested zones in Azeroth. Guilds can sign up to either escort their faction's caravan, protecting it from ambushes, or set up ambush camps to raid the enemy's caravan. Success grants participants Badges of Justice and a chance at a single-use "Badge Bomb" trinket that provides an AoE damage burst.</p>
+                </div>
+                 <div class="card p-6">
+                    <h3 class="font-bold text-xl mb-3 text-white font-header">Echoes of the Betrayer (Cross-Faction) 🤝</h3>
+                    <p class="text-sm text-gray-300">Short, instanced mini-raids where Alliance and Horde players can temporarily group up under a flag of truce (guided by Akama or Khadgar) to replay pivotal story moments from a different perspective, such as defending the Black Temple from an ancient threat. These scenarios offer unique cosmetic "Echo" weapons and armor that have a faint demonic visual effect.</p>
+                </div>
+            </div>
+        </section>
+        
+    </main>
+
+</body>
+</html>

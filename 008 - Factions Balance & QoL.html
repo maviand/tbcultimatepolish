@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Faction Balance & QoL - TBC Polish Addendum</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;800&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --color-background-primary: #121224; /* Deep Indigo */
+            --color-background-secondary: #242448; /* Midnight Blue */
+            --color-text-primary: #f0e8ff; /* Lavender White */
+            --color-text-secondary: #b3b8d9; /* Muted Lavender */
+            --color-accent-gold: #FFD700; /* Shattrath Gold */
+            --color-accent-naaru: #00e5ff; /* Naaru Blue */
+            --color-border: #3c3c6e;
+            --horde-red: #c0392b;
+            --alliance-blue: #2980b9;
+        }
+
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background-color: var(--color-background-primary);
+            color: var(--color-text-primary);
+            background-image: url('https://www.transparenttextures.com/patterns/stardust.png');
+        }
+        
+        .font-header {
+            font-family: 'Cinzel', serif;
+            letter-spacing: 0.05em;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
+        }
+
+        .card {
+            background-color: rgba(36, 36, 72, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--color-border);
+            border-radius: 0.5rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+        }
+        
+        .section-header {
+            border-bottom: 2px solid var(--color-accent-naaru);
+            padding-bottom: 0.75rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 15px -10px var(--color-accent-naaru);
+        }
+
+        .header-icon {
+             width: 3rem; height: 3rem; margin-right: 1rem;
+             filter: drop-shadow(0 0 8px var(--color-accent-naaru));
+        }
+        
+        .tab-button {
+            padding: 0.75rem 1.5rem;
+            border-bottom: 4px solid transparent;
+            font-family: 'Cinzel', serif;
+            font-weight: 700;
+            transition: all 0.3s ease;
+        }
+        .tab-button.active {
+            color: var(--color-accent-gold);
+            border-bottom-color: var(--color-accent-gold);
+        }
+        .tab-button.horde-border.active { border-bottom-color: var(--horde-red); }
+        .tab-button.alliance-border.active { border-bottom-color: var(--alliance-blue); }
+
+        .qol-card {
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .qol-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.7), 0 0 20px rgba(0, 229, 255, 0.4);
+        }
+        .qol-details { max-height: 0; overflow: hidden; transition: max-height 0.5s ease-out; }
+        .qol-card.open .qol-details { max-height: 1000px; }
+        .qol-card.open .qol-arrow { transform: rotate(180deg); }
+        .qol-arrow { transition: transform 0.3s ease; }
+
+    </style>
+</head>
+<body class="antialiased">
+
+    <main class="container mx-auto px-4 py-12 md:py-16">
+
+        <!-- Header Section -->
+        <section id="vision" class="mb-16 md:mb-24 text-center">
+            <div class="flex items-center justify-center mb-6">
+                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-20 h-20 text-[var(--color-accent-naaru)] filter drop-shadow-lg"><path d="M12.75 12.75a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" /><path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zM11.25 7.5a.75.75 0 100 1.5h1.5a.75.75 0 100-1.5h-1.5zM12 15a.75.75 0 01.75.75v1.5a.75.75 0 01-1.5 0v-1.5A.75.75 0 0112 15z" clip-rule="evenodd" /></svg>
+            </div>
+            <h1 class="text-4xl md:text-5xl font-extrabold text-white mb-4 font-header">Faction Balance & <span class="text-[var(--color-accent-naaru)]">Quality of Life</span></h1>
+            <p class="max-w-4xl mx-auto text-lg text-gray-300 leading-relaxed">
+                This addendum focuses on two pillars of a healthy MMO: ensuring fair competition and respecting player time. We propose targeted adjustments to achieve better faction parity while preserving identity, alongside significant, optional quality-of-life upgrades that modernize the user experience without sacrificing the classic TBC feel.
+            </p>
+        </section>
+
+        <!-- Faction Balance Section -->
+        <section id="faction-balance" class="mb-16 md:mb-24 scroll-mt-20">
+            <div class="section-header flex items-center">
+                <img src="https://wow.zamimg.com/images/wow/icons/large/achievement_pvp_h_h.jpg" class="header-icon rounded-lg" alt="Faction Balance Icon">
+                <h2 class="text-3xl md:text-4xl font-bold font-header">Faction Balance: <span class="text-[var(--color-accent-gold)]">Addressing Disparities</span> ⚜️</h2>
+            </div>
+            <div class="card p-8">
+                 <p class="text-gray-300 leading-relaxed mb-6 text-center">The goal is to achieve better faction parity through targeted, subtle adjustments to racials and class interactions, while carefully preserving the unique identity of each faction. No homogenization—just balance.</p>
+                
+                <div class="flex justify-center border-b border-gray-700 mb-6">
+                    <button class="tab-button horde-border active" data-tab="horde">Horde</button>
+                    <button class="tab-button alliance-border" data-tab="alliance">Alliance</button>
+                </div>
+                
+                <div id="horde-tab" class="space-y-4">
+                    <!-- Horde Racials Injected Here -->
+                </div>
+                <div id="alliance-tab" class="hidden space-y-4">
+                    <!-- Alliance Racials Injected Here -->
+                </div>
+
+                <div class="mt-12">
+                    <h3 class="font-bold text-2xl font-header text-center mb-4 text-[var(--color-accent-naaru)]">Shaman & Paladin Parity</h3>
+                    <div class="grid md:grid-cols-2 gap-8 text-sm">
+                        <div class="bg-black/20 p-4 rounded-lg">
+                            <h4 class="font-semibold text-lg text-[#F58CBA] mb-2">Alliance Paladin Buffs</h4>
+                            <p class="text-gray-300">Alliance Paladins gain access to <span class="font-bold">Seal of the Martyr</span> via Retribution talents, an ability identical in function to the Horde's Seal of Blood, ensuring competitive PvE damage potential. Additionally, talents are added to make Blessings of Might/Wisdom party-wide auras, reducing buff maintenance.</p>
+                        </div>
+                        <div class="bg-black/20 p-4 rounded-lg">
+                            <h4 class="font-semibold text-lg text-[#0070DE] mb-2">Horde Shaman Buffs</h4>
+                             <p class="text-gray-300">To bring Horde's utility closer to Alliance's Blessing of Salvation, <span class="font-bold">Tranquil Air Totem</span>'s threat reduction is increased. Furthermore, <span class="font-bold">Heroism/Bloodlust</span> now also grants a 10% mana cost reduction for its duration, adding a valuable efficiency component to the powerful haste cooldown.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- QoL Section -->
+        <section id="qol" class="mb-16 md:mb-24 scroll-mt-20">
+            <div class="section-header flex items-center">
+                <img src="https://wow.zamimg.com/images/wow/icons/large/inv_gizmo_02.jpg" class="header-icon rounded-lg" alt="QoL Icon">
+                <h2 class="text-3xl md:text-4xl font-bold font-header">Quality of Life: <span class="text-[var(--color-accent-gold)]">Respecting Your Time</span></h2>
+            </div>
+            <div id="qol-grid" class="grid md:grid-cols-2 gap-6">
+                <!-- QoL cards will be injected here -->
+            </div>
+        </section>
+        
+    </main>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- DATA ---
+            const factionData = {
+                horde: [
+                    { name: "Orc", icon: "inv_misc_head_orc_01", ability: "Blood Fury", change: "Grants Attack Power or Spell Power (based on which is higher).", rationale: "Makes the racial beneficial for all Orc specs (like Warlocks), not just physical damage dealers." },
+                    { name: "Undead", icon: "inv_misc_bone_07", ability: "Will of the Forsaken", change: "Shares a 45-second cooldown with PvP trinkets and other similar effects.", rationale: "Reduces chain-immunity potential in PvP while retaining its iconic power as a reactive tool." },
+                    { name: "Tauren", icon: "inv_misc_horn_02", ability: "War Stomp", change: "Cast time reduced to 0.25s. Hitbox size slightly normalized.", rationale: "Improves usability in fast-paced situations and addresses common complaints about the large Tauren hitbox getting caught on geometry." },
+                    { name: "Troll", icon: "inv_misc_monstertroll_01", ability: "Berserking", change: "Haste bonus now scales slightly with current gear-based Haste rating.", rationale: "Improves scaling into later raid tiers, ensuring the racial remains impactful as players acquire better gear." },
+                    { name: "Blood Elf", icon: "inv_misc_orb_04", ability: "Arcane Torrent", change: "Mana return now scales slightly with Intellect.", rationale: "Improves the mana return for casters in later gear tiers, making it more consistently useful." }
+                ],
+                alliance: [
+                    { name: "Human", icon: "inv_misc_head_human_01", ability: "The Human Spirit", change: "Reworked to grant 1% Versatility (a new stat providing % damage/healing and % damage reduction).", rationale: "Provides a more universally useful and tangible stat compared to Spirit for all classes and specializations." },
+                    { name: "Dwarf", icon: "inv_misc_head_dwarf_01", ability: "Stoneform", change: "Now also removes 1 Magic effect in addition to Bleed, Poison, and Disease.", rationale: "Significantly enhances its defensive utility, especially against casters in both PvE and PvP, making it a powerful defensive cooldown." },
+                    { name: "Night Elf", icon: "inv_misc_head_nightelf_01", ability: "Shadowmeld", change: "Can now be used briefly while in combat to drop target and cancel spell casts.", rationale: "Adds a skillful counterplay option for avoiding targeted spells, requiring precise timing without providing a full combat vanish." },
+                    { name: "Gnome", icon: "inv_misc_head_gnome_01", ability: "Escape Artist", change: "Cooldown reduced from 1.5 min to 1 min.", rationale: "Increases the frequency and reliability of the Gnome's primary defensive tool, making it more competitive with other racials." },
+                    { name: "Draenei", icon: "inv_misc_head_draenei_01", ability: "Heroic Presence", change: "Reworked to grant 1% Hit Chance (melee, ranged, and spell) to the Draenei and their party.", rationale: "Transforms a minor personal stat into a valuable group utility, mirroring the power of Horde raid buffs and making Draenei a highly desirable race for any group." }
+                ]
+            };
+
+            const qolData = [
+                { title: "Dual Talent Specialization 🔄", details: "Learned from a class trainer at level 70 for a significant gold cost. Allows players to store two independent talent builds and switch between them in any rested area, or in the field with a new crafted reagent. Action bars and equipment sets swap automatically. This is the single most impactful change for player flexibility, allowing participation in all forms of content without prohibitive respec costs." },
+                { title: "UI Overhaul (Optional) 🖥️", details: "A toggleable 'Reforged UI' theme provides a modern, high-resolution interface. Includes a robust built-in **Edit Mode** for moving and resizing all frames, **customizable action bars**, **enhanced unit frames** with better filtering and click-casting, and an **improved Auction House** and Quest Log. This reduces the need for dozens of addons and provides a stable, integrated experience." },
+                { title: "Graphical Upscale (Optional) ✨", details: "An optional setting that introduces higher-resolution textures for environments and gear, improved dynamic lighting and water effects, and a greater view distance. Also offers an optional toggle for updated character models (similar to WoD models), all while preserving the original TBC art style for purists." },
+                { title: "Basic Group Finder Tool 🤝", details: "A simple, server-bound tool to list or browse groups for dungeons, quests, and raids. It **does not include automatic matchmaking or cross-realm functionality**. This preserves the server community and the need to communicate, while making it much easier to form groups than spamming chat channels." },
+                 { title: "Mount & Pet Journal 🐾", details: "A consolidated, account-wide UI for all mounts and non-combat pets. This frees up enormous amounts of bag and bank space and makes managing your collection much easier across all characters on your account." },
+                { title: "In-Game Calendar & Guild Tools 🗓️", details: "A built-in guild and community calendar for scheduling raids, BGs, and other events. This improves organization and removes the reliance on third-party addons. Guild tools are also enhanced with a more detailed roster and challenge tracking." }
+            ];
+
+            // --- RENDER FUNCTIONS ---
+            function renderFactionBalance() {
+                const hordeTab = document.getElementById('horde-tab');
+                const allianceTab = document.getElementById('alliance-tab');
+
+                hordeTab.innerHTML = factionData.horde.map(racial => `
+                    <div class="flex items-start gap-4 p-4 bg-black/20 rounded-lg">
+                        <img src="https://wow.zamimg.com/images/wow/icons/large/${racial.icon}.jpg" alt="${racial.name}" class="w-10 h-10 rounded-full border-2 border-[var(--horde-red)]">
+                        <div>
+                            <h4 class="font-bold text-lg text-white">${racial.name} - ${racial.ability}</h4>
+                            <p class="text-gray-300 font-semibold">${racial.change}</p>
+                            <p class="text-sm text-gray-400 mt-1 italic">${racial.rationale}</p>
+                        </div>
+                    </div>
+                `).join('');
+                
+                allianceTab.innerHTML = factionData.alliance.map(racial => `
+                     <div class="flex items-start gap-4 p-4 bg-black/20 rounded-lg">
+                        <img src="https://wow.zamimg.com/images/wow/icons/large/${racial.icon}.jpg" alt="${racial.name}" class="w-10 h-10 rounded-full border-2 border-[var(--alliance-blue)]">
+                        <div>
+                            <h4 class="font-bold text-lg text-white">${racial.name} - ${racial.ability}</h4>
+                            <p class="text-gray-300 font-semibold">${racial.change}</p>
+                            <p class="text-sm text-gray-400 mt-1 italic">${racial.rationale}</p>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            function renderQoL() {
+                const grid = document.getElementById('qol-grid');
+                grid.innerHTML = qolData.map(item => `
+                    <div class="card qol-card p-6">
+                        <div class="flex justify-between items-center">
+                            <h3 class="font-bold text-xl text-white font-header">${item.title}</h3>
+                            <span class="text-2xl qol-arrow">▾</span>
+                        </div>
+                        <div class="qol-details">
+                            <p class="text-sm text-gray-300 leading-relaxed mt-4">${item.details}</p>
+                        </div>
+                    </div>
+                `).join('');
+            }
+            
+            // --- EVENT LISTENERS ---
+            function setupEventListeners() {
+                const tabs = document.querySelectorAll('.tab-button');
+                tabs.forEach(tab => {
+                    tab.addEventListener('click', () => {
+                        tabs.forEach(t => t.classList.remove('active'));
+                        tab.classList.add('active');
+                        document.getElementById('horde-tab').classList.toggle('hidden', tab.dataset.tab !== 'horde');
+                        document.getElementById('alliance-tab').classList.toggle('hidden', tab.dataset.tab !== 'alliance');
+                    });
+                });
+
+                const qolCards = document.querySelectorAll('.qol-card');
+                qolCards.forEach(card => {
+                    card.addEventListener('click', () => {
+                        card.classList.toggle('open');
+                    });
+                });
+            }
+
+            // --- INITIALIZATION ---
+            renderFactionBalance();
+            renderQoL();
+            setupEventListeners();
+        });
+    </script>
+</body>
+</html>
