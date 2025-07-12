@@ -3,328 +3,451 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>World of Warcraft: The Burning Crusade - The Ultimate Polish</title>
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts: Cinzel for headers, Open Sans for body -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <title>The Burning Crusade Classic+ | A Proposal</title>
     <style>
-        /* * WoW-Themed Styling
-         * This CSS block transforms the page to look like a part of the World of Warcraft universe.
-         * It includes colors, fonts, shadows, and interactive effects.
-         */
-        
+        /* --- FONT IMPORT --- */
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=MedievalSharp&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap');
+
+        /* --- BASE STYLES & ATMOSPHERE --- */
         :root {
-            --wow-gold: #F8B700;
-            --wow-gold-light: #ffc95e;
-            --wow-text-parchment: #C7B377;
-            --wow-fel-green: #00FF96;
-            --wow-arcane-blue: #66ccff;
+            --tbc-purple: #8A2BE2;
+            --tbc-green: #1eff00;
+            --tbc-gold: #FFB800; /* Brighter gold */
+            --stone-bg: #121115;
+            --stone-fg: #1c1a22;
+            --text-color: #d1c9bd;
+            --glow-color: rgba(255, 184, 0, 0.75);
+            --border-color: #4a453b;
+            --border-highlight: #7a715f;
         }
 
-        /* Font Definitions */
-        .font-wow-header {
-            font-family: 'Cinzel', serif;
-        }
-        .font-wow-body {
-            font-family: 'Open Sans', sans-serif;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
-        /* Full-screen background with a dark, textured overlay */
         body {
-            /* New, more thematic background image */
-            background-image: url('https://images.blz-contentstack.com/v3/assets/blt3452e3b114fab05b/blt79a8e792c6e61899/6165ef583627d34aa88293d0/tbc-bg-lg.jpg');
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--stone-bg);
+            background-image: url('https://images.blz-contentstack.com/v3/assets/blt3452e3b1141ba455/blt727317248d799f2e/60108151afd4986427137452/Shattrath-City.jpg');
             background-size: cover;
             background-position: center center;
             background-attachment: fixed;
-            background-color: #050505;
-            position: relative;
+            color: var(--text-color);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding: 2rem;
             overflow-x: hidden;
         }
 
         body::before {
             content: '';
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background-color: rgba(0, 0, 0, 0.6); /* Slightly less dim overlay */
-            backdrop-filter: blur(2px);
-            z-index: -1;
-        }
-        
-        /* Interactive mouse light effect */
-        #mouse-light {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100vw; height: 100vh;
-            background: radial-gradient(circle 400px at center, rgba(248, 183, 0, 0.1), transparent);
-            pointer-events: none;
-            transition: transform 0.1s ease-out;
-            z-index: 0;
-        }
-
-        /* Canvas for particle effects */
-        #particle-canvas {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            z-index: 0;
-            pointer-events: none;
-        }
-        
-        /* Ensure content is above the background effects */
-        .content-wrapper {
-            position: relative;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(ellipse at center, rgba(12, 10, 15, 0.6) 0%, rgba(12, 10, 15, 0.98) 100%);
             z-index: 1;
         }
 
-        /* Main title styling with enhanced text shadow */
-        .main-title {
-            letter-spacing: 0.1em;
-        }
-        .main-title > span {
-             text-shadow: 3px 3px 0 #000, 
-                         -1px -1px 0 #000, 1px -1px 0 #000,
-                         -1px 1px 0 #000, 1px 1px 0 #000,
-                         5px 5px 12px rgba(0,0,0,0.9);
+        /* --- HERO HEADER --- */
+        .hero-header {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 2rem;
+            width: 100%;
+            max-width: 1200px;
+            border: 2px solid var(--border-color);
+            border-image: linear-gradient(to bottom, var(--border-highlight), var(--border-color)) 1;
+            background: linear-gradient(180deg, rgba(30, 28, 35, 0.8) 0%, rgba(20, 18, 24, 0.9) 100%), url('https://i.imgur.com/3duUs5s.png') no-repeat center center;
+            background-size: cover;
         }
 
-        /* Card styling with border image and shadows */
-        .wow-card {
-            background: rgba(15, 10, 5, 0.8);
-            backdrop-filter: blur(10px);
-            border: 2px solid;
-            border-image-source: linear-gradient(to bottom, #785a28, #c8aa6e);
-            border-image-slice: 1;
-            box-shadow: 0 0 15px rgba(0,0,0,0.7), inset 0 0 10px rgba(0,0,0,0.5);
-            transition: all 0.3s ease-in-out;
+        .hero-header h1 {
+            font-family: 'MedievalSharp', cursive;
+            font-size: 3.5rem;
+            color: var(--tbc-gold);
+            text-shadow: 0 0 15px var(--glow-color), 0 0 5px #000;
+            letter-spacing: 3px;
+        }
+        
+        .hero-header p {
+            font-family: 'Cinzel', serif;
+            font-size: 1.1rem;
+            color: var(--text-color);
+            opacity: 0.9;
+            margin-top: 1rem;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.6;
+        }
+
+        /* --- MAIN HUB GRID --- */
+        #proposal-hub {
+            position: relative;
+            z-index: 2;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            width: 100%;
+            max-width: 1400px;
+        }
+        
+        /* --- INTERACTIVE OBJECTS / CARDS --- */
+        .proposal-object {
+            background: linear-gradient(145deg, #2e2a35, #1c1a22);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            text-decoration: none;
+            color: var(--text-color);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.4), inset 0 0 10px rgba(0,0,0,0.3);
+            overflow: hidden;
             display: flex;
             flex-direction: column;
         }
 
-        /* Enhanced hover effect with a bright glow */
-        .wow-card:hover {
-            transform: translateY(-8px) scale(1.03);
-            box-shadow: 0 0 30px rgba(248, 183, 0, 0.6), inset 0 0 15px rgba(0,0,0,0.5);
-            border-image-source: linear-gradient(to bottom, #c8aa6e, var(--wow-gold));
+        .proposal-object:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 0 20px var(--glow-color), inset 0 0 15px rgba(0,0,0,0.3);
+            border-color: var(--tbc-gold);
         }
 
-        .wow-card-title {
-            color: var(--wow-gold-light);
-            text-shadow: 2px 2px 4px #000;
+        .card-artwork {
+            height: 120px;
+            background-color: rgba(0,0,0,0.2);
+            border-bottom: 1px solid var(--border-color);
+            overflow: hidden;
+        }
+        
+        .card-artwork img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s ease;
         }
 
-        .wow-card-body {
+        .proposal-object:hover .card-artwork img {
+            transform: scale(1.05);
+        }
+
+        .card-content {
+            padding: 1.5rem;
+            text-align: center;
             flex-grow: 1;
         }
         
-        .learn-more {
-             color: var(--wow-arcane-blue);
-             text-shadow: 1px 1px 2px rgba(0,0,0,0.7);
-             transition: color 0.2s ease, text-shadow 0.2s ease;
+        .proposal-object h2 {
+            font-family: 'Cinzel', serif;
+            color: var(--tbc-gold);
+            margin-bottom: 0.75rem;
+            font-size: 1.3rem;
+            font-weight: 700;
+            letter-spacing: 1px;
         }
-        .wow-card:hover .learn-more {
-            color: white;
-            text-shadow: 0 0 8px var(--wow-arcane-blue);
+
+        .proposal-object p {
+            font-size: 0.95rem;
+            opacity: 0.8;
+            line-height: 1.5;
         }
+
+        #object-goblin:hover { border-color: var(--tbc-green); box-shadow: 0 0 20px rgba(0, 255, 0, 0.5); }
+        #object-legendary:hover { border-color: #ff8000; box-shadow: 0 0 20px rgba(255, 128, 0, 0.6); }
+
+        /* --- SUB-MENUS / MODAL --- */
+        .submenu {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            z-index: 100;
+            background: linear-gradient(160deg, #25222b, #151318);
+            border: 2px solid;
+            border-image-slice: 1;
+            border-image-source: linear-gradient(to top left, var(--border-color), var(--border-highlight), var(--border-color));
+            padding: 1rem;
+            width: 90%;
+            max-width: 550px;
+            box-shadow: 0 0 60px rgba(0,0,0,0.9);
+            opacity: 0;
+            transform: translate(-50%, -50%) scale(0.95);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+
+        .submenu.visible {
+            display: block;
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .submenu-header {
+            padding: 1rem 1.5rem;
+            text-align: center;
+            background: rgba(0,0,0,0.2);
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .submenu-header h3 {
+            font-family: 'MedievalSharp', cursive;
+            font-size: 2.2rem;
+            color: var(--tbc-gold);
+            text-shadow: 0 0 10px var(--glow-color);
+        }
+
+        .submenu-list {
+            list-style: none;
+            padding: 1.5rem;
+            max-height: 60vh;
+            overflow-y: auto;
+        }
+
+        .submenu-list li a {
+            display: block;
+            padding: 0.8rem 1.2rem;
+            margin-bottom: 0.5rem;
+            background: var(--stone-fg);
+            border: 1px solid #333;
+            border-radius: 4px;
+            text-decoration: none;
+            color: var(--text-color);
+            font-family: 'Cinzel', serif;
+            font-weight: 500;
+            font-size: 1rem;
+            transition: all 0.2s ease;
+        }
+
+        .submenu-list li a:hover {
+            background-color: var(--tbc-gold);
+            color: #000;
+            border-color: var(--tbc-gold);
+            transform: translateX(5px);
+        }
+
+        #submenu-backdrop {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: brightness(0.6) blur(4px);
+            z-index: 99;
+        }
+        #submenu-backdrop.visible {
+            display: block;
+        }
+
+        /* --- RESPONSIVE DESIGN --- */
+        @media (max-width: 768px) {
+            body { padding: 1rem; }
+            .hero-header { margin-bottom: 2rem; }
+            .hero-header h1 { font-size: 2.5rem; }
+            #proposal-hub { grid-template-columns: 1fr; gap: 1.5rem; }
+            .submenu { width: 95%; }
+        }
+        
+        /* --- AUDIO CONTROLS --- */
+        #audio-control {
+            position: fixed; bottom: 15px; right: 15px; z-index: 101;
+            background: var(--stone-fg); border: 1px solid var(--tbc-gold);
+            color: var(--tbc-gold); padding: 0.5rem; border-radius: 50%;
+            width: 40px; height: 40px; cursor: pointer; display: flex;
+            justify-content: center; align-items: center; font-size: 1.2rem;
+            user-select: none;
+        }
+        #audio-control:hover { background: var(--tbc-gold); color: var(--stone-fg); }
     </style>
 </head>
-<body class="font-wow-body bg-gray-900 text-gray-200 antialiased">
+<body>
+    <header class="hero-header">
+        <h1>The Burning Crusade: Classic+</h1>
+        <p>A comprehensive reimagining of The Burning Crusade, featuring new content, sweeping class and system overhauls, and a renewed focus on the entire world of Azeroth.</p>
+    </header>
 
-    <!-- Background Effects -->
-    <div id="mouse-light"></div>
-    <canvas id="particle-canvas"></canvas>
+    <main id="proposal-hub">
+        <!-- Card 1: Lore -->
+        <a href="000 - Lore 1-60 and Faction Leaders.html" class="proposal-object" data-sound="hover">
+            <div class="card-artwork"><img src="https://i.imgur.com/rzfVlkY.png" alt="Tome of Ages Artwork"></div>
+            <div class="card-content"><h2>Tome of Ages</h2><p>Revisit the foundational stories and key figures leading the charge into Outland.</p></div>
+        </a>
+        
+        <!-- Card 2: Goblins -->
+        <a href="001 - Goblins.html" id="object-goblin" class="proposal-object" data-sound="hover">
+            <div class="card-artwork"><img src="https://i.imgur.com/yAuJyY7.jpeg" alt="Goblin Artwork"></div>
+            <div class="card-content"><h2>The Goblin Gambit</h2><p>Introducing a new neutral race with explosive potential and enterprising ambitions.</p></div>
+        </a>
 
-    <!-- Main Container -->
-    <div class="content-wrapper container mx-auto px-4 sm:px-6 py-12 md:py-20">
+        <!-- Card 3: Classes -->
+        <div id="object-classes" class="proposal-object" data-sound="hover" data-submenu-target="#codex-menu">
+            <div class="card-artwork"><img src="https://i.imgur.com/45P9CpZ.png" alt="Class Balance Artwork"></div>
+            <div class="card-content"><h2>Codex of War</h2><p>A complete overhaul of class balance, ensuring every specialization has its place.</p></div>
+        </div>
 
-        <!-- Header Section -->
-        <header class="text-center mb-12 md:mb-16">
-            <!-- Updated Title Structure -->
-            <h1 class="main-title font-wow-header text-5xl md:text-6xl font-extrabold leading-tight">
-                <span class="text-[var(--wow-gold)]">World of Warcraft</span>
-                <span class="block text-white text-4xl md:text-5xl mt-1">The Burning Crusade</span>
-                <span class="block text-white text-2xl md:text-3xl mt-2 opacity-90">The Ultimate Polish</span>
-            </h1>
-            <p class="max-w-4xl mx-auto text-base md:text-lg text-amber-100/80 mt-8 leading-relaxed bg-black/40 p-4 rounded-lg border border-amber-900/50 shadow-lg">
-                This proposal integrates extensive community feedback with innovative design to deliver the most engaging, balanced, and rewarding TBC experience possible. It focuses on strategic modernization, transforming tedious grinds into dynamic encounters, achieving holistic class balance, and revitalizing the entire world of Azeroth. Our goal is to achieve a comprehensive balance across classes and specializations, ensuring every specialization offers unique, valuable utility and a compelling gameplay experience. This iteration prioritizes player agency, allowing you to choose your level of modernization.
-            </p>
-        </header>
+        <!-- Card 4: Dungeons & Raids -->
+        <div id="object-dungeons" class="proposal-object" data-sound="hover" data-submenu-target="#dungeon-menu">
+            <div class="card-artwork"><img src="https://i.imgur.com/2Ir5cDA.png" alt="Dungeons and Raids Artwork"></div>
+            <div class="card-content"><h2>Call of the Crusade</h2><p>New challenges await in reimagined dungeons and entirely new raid content.</p></div>
+        </div>
+        
+        <!-- Card 5: Professions -->
+        <div id="object-professions" class="proposal-object" data-sound="hover" data-submenu-target="#artisan-menu">
+            <div class="card-artwork"><img src="https://i.imgur.com/jNThiLh.jpeg" alt="Professions Artwork"></div>
+            <div class="card-content"><h2>Artisan's Almanac</h2><p>A deep crafting system rework, making every profession engaging and profitable.</p></div>
+        </div>
 
-        <!-- Links Grid -->
-        <main class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        <!-- Card 6: Old World -->
+        <a href="005 - Old World Relevance.html" class="proposal-object" data-sound="hover">
+            <div class="card-artwork"><img src="https://i.imgur.com/zPvyOvQ.png" alt="Old World Artwork"></div>
+            <div class="card-content"><h2>A Relevant Realm</h2><p>New reasons to return to Azeroth. Invasions, updated quests, and dynamic events.</p></div>
+        </a>
+        
+        <!-- Card 7: Legendaries -->
+        <a href="006 - Legendaries.html" id="object-legendary" class="proposal-object" data-sound="hover">
+            <div class="card-artwork"><img src="https://i.imgur.com/WcJmiW5.png" alt="Legendaries Artwork"></div>
+            <div class="card-content"><h2>Whispers of Legends</h2><p>Discover new, class-defining legendary items forged in the heart of the Nether.</p></div>
+        </a>
 
-            <!-- Card 1: Goblins -->
-            <a href="./001 - Goblins.html" class="wow-card block p-6 rounded-lg cursor-pointer">
-                <div class="wow-card-body">
-                    <h2 class="wow-card-title font-wow-header text-xl font-bold mb-2">🚀 Goblins</h2>
-                    <p class="text-[var(--wow-text-parchment)] text-sm">A proposal for introducing Goblins as a neutral race, their society, and their explosive impact on Azeroth.</p>
-                </div>
-                <p class="learn-more font-bold mt-4">Learn More &rarr;</p>
-            </a>
+        <!-- Card 8: Pinnacle Quests -->
+        <a href="007 - Pinnacle Quests.html" class="proposal-object" data-sound="hover">
+            <div class="card-artwork"><img src="https://i.imgur.com/HCxgkQU.jpeg" alt="Pinnacle Quests Artwork"></div>
+            <div class="card-content"><h2>The Hero's Journey</h2><p>Epic, class-specific questlines that challenge your mastery and reward you greatly.</p></div>
+        </a>
+        
+        <!-- Card 9: Factions & QoL -->
+        <a href="008 - Factions Balance and QoL - The Shattrath Concordat.html" class="proposal-object" data-sound="hover">
+            <div class="card-artwork"><img src="https://i.imgur.com/O4DUhMo.jpeg" alt="Factions and QoL Artwork"></div>
+            <div class="card-content"><h2>Shattrath Concordat</h2><p>Balancing racials, Paladins and Shamans, and quality of life improvements.</p></div>
+        </a>
+        
+        <!-- Card 10: Guilds -->
+        <a href="009 - Guilds.html" class="proposal-object" data-sound="hover">
+            <div class="card-artwork"><img src="https://i.imgur.com/QXLjF14.jpeg" alt="Guilds Artwork"></div>
+            <div class="card-content"><h2>A Banner United</h2><p>Enhanced guild systems, including shared housing, progression, and rewards.</p></div>
+        </a>
+    </main>
 
-            <!-- Card 2: Classes & Specs -->
-            <a href="./002 - Classes & Specs.html" class="wow-card block p-6 rounded-lg cursor-pointer">
-                 <div class="wow-card-body">
-                    <h2 class="wow-card-title font-wow-header text-xl font-bold mb-2">✨ Classes & Specs</h2>
-                    <p class="text-[var(--wow-text-parchment)] text-sm">A deep dive into balance refinements, talent polish, and modern enhancements for every class and specialization.</p>
-                </div>
-                <p class="learn-more font-bold mt-4">Learn More &rarr;</p>
-            </a>
+    <!-- SUB-MENUS (Initially Hidden) -->
+    <div id="submenu-backdrop"></div>
 
-            <!-- Card 3: Raids -->
-            <a href="./003 - Raids.html" class="wow-card block p-6 rounded-lg cursor-pointer">
-                 <div class="wow-card-body">
-                    <h2 class="wow-card-title font-wow-header text-xl font-bold mb-2">🐉 Raids & Dungeons</h2>
-                    <p class="text-[var(--wow-text-parchment)] text-sm">Experience reimagined raids and dungeons, from a dynamic Mount Hyjal to a treacherous Black Temple.</p>
-                </div>
-                <p class="learn-more font-bold mt-4">Learn More &rarr;</p>
-            </a>
+    <!-- Codex of War Sub-Menu -->
+    <div id="codex-menu" class="submenu">
+        <div class="submenu-header"><h3>Codex of War: Class Changes</h3></div>
+        <ul class="submenu-list">
+            <li><a href="002 - Classes & Specs - Class Balance.html" data-sound="hover">Overall Class Balance Philosophy</a></li>
+            <li><a href="002 - Classes & Specs - Druid Changes.html" data-sound="hover">Druid Changes</a></li>
+            <li><a href="002 - Classes & Specs - Hunter Changes.html" data-sound="hover">Hunter Changes</a></li>
+            <li><a href="002 - Classes & Specs - Mage Changes.html" data-sound="hover">Mage Changes</a></li>
+            <li><a href="002 - Classes & Specs - Paladin Changes.html" data-sound="hover">Paladin Changes</a></li>
+            <li><a href="002 - Classes & Specs - Priest Changes.html" data-sound="hover">Priest Changes</a></li>
+            <li><a href="002 - Classes & Specs - Rogue Changes.html" data-sound="hover">Rogue Changes</a></li>
+            <li><a href="002 - Classes & Specs - Shaman Changes.html" data-sound="hover">Shaman Changes</a></li>
+            <li><a href="002 - Classes & Specs - Warlock Changes.html" data-sound="hover">Warlock Changes</a></li>
+            <li><a href="002 - Classes & Specs - Warrior Changes.html" data-sound="hover">Warrior Changes</a></li>
+        </ul>
+    </div>
 
-            <!-- Card 4: Professions -->
-            <a href="./004 - Professions.html" class="wow-card block p-6 rounded-lg cursor-pointer">
-                <div class="wow-card-body">
-                    <h2 class="wow-card-title font-wow-header text-xl font-bold mb-2">🛠️ Professions</h2>
-                    <p class="text-[var(--wow-text-parchment)] text-sm">Discover overhauled professions with unique utility, epic crafting quests, and new masterwork items.</p>
-                </div>
-                <p class="learn-more font-bold mt-4">Learn More &rarr;</p>
-            </a>
+    <!-- Dungeons & Raids Sub-Menu -->
+    <div id="dungeon-menu" class="submenu">
+        <div class="submenu-header"><h3>Call of the Crusade: Content</h3></div>
+        <ul class="submenu-list">
+            <li><a href="003 - Dungeons & Raids - New Content.html" data-sound="hover">New Dungeons & Raids</a></li>
+            <li><a href="003 - Dungeons & Raids - Remade.html" data-sound="hover">Classic Dungeons Remade</a></li>
+        </ul>
+    </div>
 
-            <!-- Card 5: Old World Relevance -->
-            <a href="./005 - Old World Relevance.html" class="wow-card block p-6 rounded-lg cursor-pointer">
-                <div class="wow-card-body">
-                    <h2 class="wow-card-title font-wow-header text-xl font-bold mb-2">🌍 Old World Relevance</h2>
-                    <p class="text-[var(--wow-text-parchment)] text-sm">Journey back to a revitalized Azeroth with level 70 heroic content, new world events, and paragon reputations.</p>
-                </div>
-                <p class="learn-more font-bold mt-4">Learn More &rarr;</p>
-            </a>
-
-            <!-- Card 6: Legendaries & Pinnacle -->
-            <a href="./006 - Legendaries & Pinnacle.html" class="wow-card block p-6 rounded-lg cursor-pointer">
-                <div class="wow-card-body">
-                    <h2 class="wow-card-title font-wow-header text-xl font-bold mb-2">⚔️ Legendaries & Pinnacle</h2>
-                    <p class="text-[var(--wow-text-parchment)] text-sm">Embark on epic journeys to forge legendary items and complete Pinnacle Quests for unique rewards.</p>
-                </div>
-                <p class="learn-more font-bold mt-4">Learn More &rarr;</p>
-            </a>
-
-            <!-- Card 7: Guilds -->
-            <a href="./007 - Guilds.html" class="wow-card block p-6 rounded-lg cursor-pointer">
-                <div class="wow-card-body">
-                    <h2 class="wow-card-title font-wow-header text-xl font-bold mb-2">🏰 Guilds</h2>
-                    <p class="text-[var(--wow-text-parchment)] text-sm">Forge a powerful community with guild halls, weekly challenges, and dynamic world content for your guild.</p>
-                </div>
-                <p class="learn-more font-bold mt-4">Learn More &rarr;</p>
-            </a>
-
-            <!-- Card 8: Factions Balance & QoL -->
-            <a href="./008 - Factions Balance & QoL.html" class="wow-card block p-6 rounded-lg cursor-pointer">
-                <div class="wow-card-body">
-                    <h2 class="wow-card-title font-wow-header text-xl font-bold mb-2">⚖️ Balance & QoL</h2>
-                    <p class="text-[var(--wow-text-parchment)] text-sm">Explore targeted adjustments for faction parity and major quality-of-life upgrades to modernize the TBC experience.</p>
-                </div>
-                <p class="learn-more font-bold mt-4">Learn More &rarr;</p>
-            </a>
-
-        </main>
-
-        <!-- Footer -->
-        <footer class="text-center mt-12 md:mt-16 text-amber-100/50">
-            <p>This proposal is a conceptual design and not affiliated with Blizzard Entertainment. &copy; 2024</p>
-        </footer>
-
+    <!-- Professions Sub-Menu -->
+    <div id="artisan-menu" class="submenu">
+        <div class="submenu-header"><h3>The Artisan's Almanac</h3></div>
+        <ul class="submenu-list">
+            <li><a href="004 - Profession System Changes.html" data-sound="hover">Profession System Changes</a></li>
+            <li><a href="004 - Professions Items.html" data-sound="hover">New Profession Items</a></li>
+        </ul>
+    </div>
+    
+    <!-- Audio Control Button -->
+    <div id="audio-control" title="Toggle Music">
+        <span>&#x1F50A;</span> <!-- Speaker Icon -->
     </div>
 
     <script>
-        // --- Interactive Effects Script ---
+        document.addEventListener('DOMContentLoaded', () => {
+            const backgroundMusic = new Audio('https://github.com/rafaelreis-hotmart/Audio-Sample-files/raw/master/sample.mp3');
+            backgroundMusic.loop = true;
+            backgroundMusic.volume = 0.15;
 
-        // 1. Mouse Light Effect
-        const mouseLight = document.getElementById('mouse-light');
-        document.addEventListener('mousemove', (e) => {
-            // This moves the light effect to the cursor's position.
-            // Using transform is more performant than changing top/left.
-            mouseLight.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
-        });
+            const hoverSound = new Audio("data:audio/wav;base64,UklGRigAAABXQVZFZm10IBIAAAABAAEARKwAAIhYAQACABAAAABkYXRhAgAAAAEA"); 
+            const clickSound = new Audio("data:audio/wav;base64,UklGRlIAAABXQVZFZm10IBIAAAABAAEARKwAAIhYAQACABAAAABkYXRhBgAAAAEAsub/7w=="); 
+            
+            let isMusicPlaying = false;
+            const audioControl = document.getElementById('audio-control');
+            const audioIcon = audioControl.querySelector('span');
 
-        // 2. Particle Canvas Effect
-        const canvas = document.getElementById('particle-canvas');
-        const ctx = canvas.getContext('2d');
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-
-        let particlesArray;
-
-        // Particle Object
-        class Particle {
-            constructor(x, y, directionX, directionY, size, color) {
-                this.x = x;
-                this.y = y;
-                this.directionX = directionX;
-                this.directionY = directionY;
-                this.size = size;
-                this.color = color;
-            }
-
-            // Method to draw individual particle
-            draw() {
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false);
-                ctx.fillStyle = this.color;
-                ctx.fill();
-            }
-
-            // Method to update particle position
-            update() {
-                if (this.x > canvas.width || this.x < 0) {
-                    this.directionX = -this.directionX;
+            audioControl.addEventListener('click', () => {
+                if (isMusicPlaying) {
+                    backgroundMusic.pause();
+                    audioIcon.innerHTML = '&#x1F507;';
+                    audioControl.title = "Play Music";
+                } else {
+                    backgroundMusic.play().catch(e => console.error("Audio autoplay failed:", e));
+                    audioIcon.innerHTML = '&#x1F50A;';
+                    audioControl.title = "Mute Music";
                 }
-                if (this.y > canvas.height || this.y < 0) {
-                    this.directionY = -this.directionY;
+                isMusicPlaying = !isMusicPlaying;
+            });
+            
+            document.querySelectorAll('[data-sound="hover"]').forEach(elem => {
+                elem.addEventListener('mouseenter', () => {
+                    if(isMusicPlaying) {
+                      hoverSound.currentTime = 0;
+                      hoverSound.play().catch(e => {});
+                    }
+                });
+            });
+
+            const submenuBackdrop = document.getElementById('submenu-backdrop');
+
+            document.querySelectorAll('[data-submenu-target]').forEach(trigger => {
+                trigger.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    if(isMusicPlaying) {
+                      clickSound.currentTime = 0;
+                      clickSound.play().catch(e => {});
+                    }
+                    const targetMenu = document.querySelector(trigger.dataset.submenuTarget);
+                    if (targetMenu) {
+                        submenuBackdrop.classList.add('visible');
+                        targetMenu.classList.add('visible');
+                    }
+                });
+            });
+
+            const closeAllSubmenus = () => {
+                document.querySelectorAll('.submenu.visible').forEach(menu => {
+                    menu.classList.remove('visible');
+                });
+                submenuBackdrop.classList.remove('visible');
+            };
+
+            submenuBackdrop.addEventListener('click', closeAllSubmenus);
+            
+            document.addEventListener('keydown', (e) => {
+                if (e.key === "Escape") {
+                    closeAllSubmenus();
                 }
-                this.x += this.directionX;
-                this.y += this.directionY;
-                this.draw();
-            }
-        }
-
-        // Create particle array
-        function init() {
-            particlesArray = [];
-            // Adjust particle count based on screen size for better performance
-            let numberOfParticles = (canvas.height * canvas.width) / 9000;
-            for (let i = 0; i < numberOfParticles; i++) {
-                let size = (Math.random() * 2) + 1;
-                let x = (Math.random() * ((innerWidth - size * 2) - (size * 2)) + size * 2);
-                let y = (Math.random() * ((innerHeight - size * 2) - (size * 2)) + size * 2);
-                let directionX = (Math.random() * .4) - .2;
-                let directionY = (Math.random() * .4) - .2;
-                let color = 'rgba(248, 183, 0, 0.4)'; // Faint gold color
-
-                particlesArray.push(new Particle(x, y, directionX, directionY, size, color));
-            }
-        }
-
-        // Animation loop
-        function animate() {
-            requestAnimationFrame(animate);
-            ctx.clearRect(0, 0, innerWidth, innerHeight);
-
-            for (let i = 0; i < particlesArray.length; i++) {
-                particlesArray[i].update();
-            }
-        }
-
-        // Resize event
-        window.addEventListener('resize', () => {
-            canvas.width = innerWidth;
-            canvas.height = innerHeight;
-            init();
+            });
         });
-
-        // Start animation
-        init();
-        animate();
     </script>
+
 </body>
 </html>

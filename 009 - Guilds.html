@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fel-Forged Legacy - A TBC Guild System Reimagined</title>
+    <!-- 
+    REFORGE NOTES (v10):
+    - Removed the right-hand sidebar ("Server Status") as requested.
+    - Adjusted the main layout to a single, wider column for a more focused presentation.
+    - All other content and functionality remains the same.
+    -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --wh-bg-dark: #121212;
+            --wh-bg-medium: #1E1E1E;
+            --wh-bg-light: #252525;
+            --wh-border: #4a4a4a;
+            --wh-text-light: #F0F0F0;
+            --wh-text-medium: #A3A3A3;
+            --wh-blue-link: #58A6FF;
+            --wh-gold-highlight: #FFD100;
+            --wh-horde-red: #CF2C2C;
+            --wh-alliance-blue: #2C79CF;
+            --quality-epic: #a335ee;
+            --quality-rare: #0070dd;
+        }
+        html {
+            background-color: var(--wh-bg-dark);
+        }
+        body {
+            background-color: var(--wh-bg-medium);
+            background-image: url('https://www.transparenttextures.com/patterns/dark-matter.png');
+            color: var(--wh-text-light);
+            font-family: 'Roboto', sans-serif;
+        }
+        .font-header { 
+            font-family: 'Cormorant Garamond', serif; 
+            font-weight: 700; 
+            letter-spacing: 0.025em;
+        }
+        main h2.font-header {
+            color: var(--wh-gold-highlight);
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+        .nav-link {
+            transition: color 0.3s ease;
+            color: var(--wh-text-medium);
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 0.875rem;
+            letter-spacing: 0.05em;
+            font-family: 'Roboto', sans-serif;
+        }
+        .nav-link:hover { color: var(--wh-gold-highlight); }
+        .sub-nav {
+            background-color: #000;
+            border-bottom: 1px solid #222;
+        }
+        .hero-section {
+            background-image: linear-gradient(to bottom, rgba(18,18,18,0.7), var(--wh-bg-medium)), url('https://i.imgur.com/jluXXtz.png');
+            background-size: cover; background-position: center;
+        }
+        .hero-title {
+            color: var(--wh-gold-highlight);
+            text-shadow: 2px 2px 8px rgba(0,0,0,0.9);
+        }
+        .section-header-line {
+            width: 100px; height: 2px;
+            background: var(--wh-gold-highlight);
+            margin: 1rem auto;
+            box-shadow: 0 0 5px var(--wh-gold-highlight);
+        }
+        .card {
+            background-color: var(--wh-bg-light);
+            border: 2px solid;
+            border-image-slice: 2;
+            border-image-source: linear-gradient(to bottom, #777, #333);
+            border-radius: 4px;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
+        }
+        
+        .tab-button-container {
+            border-bottom: 2px solid #333;
+        }
+        .tab-button {
+            transition: all 0.2s ease-in-out;
+            background-color: transparent;
+            border: none;
+            border-bottom: 3px solid transparent;
+            color: var(--wh-text-medium);
+            font-weight: 700;
+            border-radius: 0;
+            padding-top: 0.85rem;
+            padding-bottom: 0.85rem;
+        }
+        .tab-button:hover { color: var(--wh-text-light); }
+        .tab-button.active {
+            color: var(--wh-blue-link);
+            background-color: rgba(88, 166, 255, 0.1);
+            border-bottom-color: var(--wh-blue-link);
+        }
+        
+        .talent-calc-bg { background-color: #1c1c1c; border: 1px solid var(--wh-border); }
+        .talent-tree {
+            display: grid;
+            grid-template-rows: repeat(5, 60px);
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            position: relative;
+        }
+        .talent-icon {
+            width: 52px; height: 52px; border: 2px solid #555;
+            border-radius: 4px; cursor: pointer; position: relative;
+            background-size: cover; background-position: center;
+            justify-self: center;
+            align-self: center;
+            transition: border-color 0.2s;
+            box-shadow: inset 0 0 5px rgba(0,0,0,0.7);
+        }
+        .talent-icon.locked { filter: grayscale(100%); opacity: 0.5; }
+        .talent-icon.available:hover { border-color: var(--wh-gold-highlight); }
+        .talent-icon.maxed { border-color: var(--wh-gold-highlight); box-shadow: 0 0 8px var(--wh-gold-highlight); }
+        .talent-rank {
+            position: absolute; bottom: -2px; right: -2px;
+            background-color: rgba(0,0,0,0.8); color: white;
+            padding: 1px 4px; border-radius: 3px; font-size: 12px;
+            border: 1px solid #777;
+        }
+        .talent-icon.maxed .talent-rank { color: var(--wh-gold-highlight); }
+        .talent-connector { position: absolute; background-color: #444; z-index: 0; pointer-events: none;}
+        .tooltip {
+            display: none; position: absolute; left: 110%; top: 0;
+            width: 300px; background-color: #111; border: 1px solid var(--wh-gold-highlight);
+            color: white; padding: 10px; border-radius: 4px; z-index: 100; pointer-events: none;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+        }
+        .talent-icon:hover .tooltip { display: block; }
+        .tooltip-title { color: var(--wh-gold-highlight); font-weight: bold; }
+        .tooltip-rank { color: #9d9d9d; }
+        .tooltip-next-rank { color: #1eff00; }
+        .tooltip-req { color: #ff4d4d; }
+
+        .link-epic { color: var(--quality-epic); font-weight: 500; }
+        .link-epic:hover { text-decoration: underline; }
+        .link-rare { color: var(--quality-rare); font-weight: 500; }
+        .link-rare:hover { text-decoration: underline; }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header id="header" class="bg-black/80 backdrop-blur-sm shadow-lg sticky top-0 z-50">
+        <div class="border-b border-wh-border">
+            <nav class="container mx-auto px-6 h-16 flex justify-between items-center">
+                <h1 class="font-header text-2xl md:text-3xl tracking-wider text-wh-gold-highlight">⚔️ Fel-Forged Legacy</h1>
+                <div class="flex-1 flex justify-center px-8">
+                    <div class="w-full max-w-lg relative">
+                        <input type="text" placeholder="Search..." class="w-full bg-wh-bg-dark border border-wh-border rounded-md py-2 pl-10 pr-4 text-wh-text-light focus:outline-none focus:border-wh-blue-link">
+                        <svg class="w-5 h-5 text-wh-text-medium absolute left-3 top-1/2 -translate-y-1/2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                    </div>
+                </div>
+                <div>
+                    <div class="w-10 h-10 bg-wh-bg-light rounded-full border border-wh-border"></div>
+                </div>
+            </nav>
+        </div>
+        <div class="sub-nav hidden md:block">
+            <div class="container mx-auto px-6 h-12 flex items-center space-x-8">
+                <a href="#founding" class="nav-link">The Founding</a>
+                <a href="#sanctum" class="nav-link">The Sanctum</a>
+                <a href="#accord" class="nav-link">The Accord</a>
+                <a href="#war" class="nav-link">The War</a>
+                <a href="#dynamic-world" class="nav-link">World Events</a>
+            </div>
+        </div>
+    </header>
+
+    <div class="hero-section text-white text-center border-b-4 border-black">
+        <div class="container mx-auto px-6 py-20 md:py-32">
+            <img src="https://static.wikia.nocookie.net/wowpedia/images/0/0e/Human_Crest.png/revision/latest?cb=20180710000953" alt="Crest" class="mx-auto w-24 h-auto mb-6 opacity-80">
+            <h2 class="font-header text-4xl md:text-6xl font-black hero-title">A Guild System Reimagined</h2>
+            <p class="mt-4 max-w-3xl mx-auto text-lg md:text-xl text-wh-text-medium font-sans">An interactive exploration of a comprehensive redesign for the guild system in The Burning Crusade.</p>
+        </div>
+    </div>
+
+    <div class="container mx-auto px-6 py-12">
+        <div class="max-w-5xl mx-auto">
+            <main>
+                <section id="founding" class="mb-16 scroll-mt-32">
+                    <h2 class="font-header text-3xl md:text-4xl font-bold text-center">📜 The Founding: A Pact of Purpose</h2>
+                    <div class="section-header-line"></div>
+                    <p class="max-w-4xl mx-auto text-center text-wh-text-medium mb-12">Creating a guild is a momentous act that defines its identity. This system replaces the simple signature with a formal declaration of intent, imbuing the guild with a unique character and strategic direction from day one.</p>
+                    <div class="card p-6 mb-8">
+                        <h3 class="font-header text-2xl font-bold text-center mb-8 text-wh-text-light">The Foundational Choice</h3>
+                        <img src="https://i.imgur.com/S9Y6Oze.png" alt="Foundational Choice" class="w-full rounded-md shadow-lg mb-6">
+                        <p class="text-center text-wh-text-medium">Your first, most critical decision: will your guild's strength come from overwhelming numbers, or from the surgical precision of a skilled elite?</p>
+                    </div>
+                    
+                    <div class="card p-6 mt-8">
+                         <h3 class="font-header text-2xl font-bold text-center mb-6 text-wh-text-light">Path-Specific Rewards</h3>
+                         <div class="grid grid-cols-1 md:grid-cols-5 gap-6 items-center">
+                            <div class="md:col-span-3">
+                                <div class="mb-6">
+                                    <h4 class="font-header text-xl font-bold mb-2" style="color: var(--wh-horde-red);">Path of the Horde Rewards</h4>
+                                    <ul class="space-y-3 list-disc list-inside text-wh-text-medium">
+                                        <li><b>The Long March:</b> Guild members gain a passive 10% movement speed bonus.</li>
+                                        <li><b>Mass Production:</b> Unlocks a weekly quest to turn in common materials for Aetherium and Accord Points.</li>
+                                        <li><b>Field Repairs:</b> Allows an officer to deploy a "Field Anvil" once per hour.</li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h4 class="font-header text-xl font-bold mb-2" style="color: var(--wh-alliance-blue);">Path of the Few Rewards</h4>
+                                    <ul class="space-y-3 list-disc list-inside text-wh-text-medium">
+                                        <li><a href="#" class="link-epic">Surgical Strike (Elite Talent):</a> Allows a GvG team to place a Teleportation Rune.</li>
+                                        <li><a href="#" class="link-epic">Aetherium Attunement (Elite Talent):</a> Grants a chance to loot Aetherium Slivers.</li>
+                                        <li><a href="#" class="link-rare">Scout's Acuity:</a> Reveals the location of a nearby enemy Relic carrier.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="md:col-span-2">
+                                <img src="https://i.imgur.com/QnXwj8D.jpeg" alt="Path Rewards" class="w-full rounded-md shadow-lg">
+                            </div>
+                         </div>
+                    </div>
+                </section>
+            
+                <section id="sanctum" class="mb-16 scroll-mt-32">
+                    <h2 class="font-header text-3xl md:text-4xl font-bold text-center">🏰 The Sanctum: A Bastion</h2>
+                    <div class="section-header-line"></div>
+                    <p class="max-w-4xl mx-auto text-center text-wh-text-medium mb-12">The Guild Sanctum is a physical fortress a guild must conquer, build, and defend. It is an earned symbol of power, a customizable home base in a hostile world.</p>
+                    <div class="card p-4">
+                        <img src="https://i.imgur.com/FfMp20H.png" alt="Guild Sanctum" class="w-full rounded-md shadow-lg">
+                    </div>
+                </section>
+        
+                <section id="accord" class="mb-16 scroll-mt-32">
+                    <h2 class="font-header text-3xl md:text-4xl font-bold text-center">🌳 The Guild Accord</h2>
+                    <div class="section-header-line"></div>
+                    <p class="max-w-4xl mx-auto text-center text-wh-text-medium mb-12">The Guild Accord is a guild-wide talent system. Guilds collectively earn Accord Points (AP) to unlock permanent bonuses. Spend points below to explore the possibilities.</p>
+                    <div id="talent-calculator" class="talent-calc-bg p-4 md:p-8 rounded-lg">
+                        <!-- Talent Trees will be injected here by JS -->
+                    </div>
+                </section>
+
+                <section id="war" class="mb-16 scroll-mt-32">
+                    <h2 class="font-header text-3xl md:text-4xl font-bold text-center">⚔️ The War for Outland</h2>
+                    <div class="section-header-line"></div>
+                    <p class="max-w-4xl mx-auto text-center text-wh-text-medium mb-12">The endgame is a suite of high-stakes PvP objectives that generate epic, unscripted conflict and player-driven stories.</p>
+                    <div class="card">
+                        <div class="flex justify-center tab-button-container px-4">
+                            <button data-tab="relic-raids" class="tab-button flex-1 py-3 px-4 text-sm active">Relic Raids</button>
+                            <button data-tab="territory-control" class="tab-button flex-1 py-3 px-4 text-sm">Territory Control</button>
+                            <button data-tab="proving-grounds" class="tab-button flex-1 py-3 px-4 text-sm">Proving Grounds</button>
+                        </div>
+                        <div id="war-content-container" class="p-6"></div>
+                    </div>
+                </section>
+
+                <section id="dynamic-world" class="scroll-mt-32">
+                    <h2 class="font-header text-3xl md:text-4xl font-bold text-center">🌍 Dynamic World Content</h2>
+                    <div class="section-header-line"></div>
+                    <p class="max-w-4xl mx-auto text-center text-wh-text-medium mb-12">To make Outland feel like a persistent, ever-changing battlefield, new dynamic events will regularly spawn, encouraging world PvP and providing alternative progression paths.</p>
+                    <div class="space-y-6">
+                        <div class="card p-4 md:flex gap-6 items-center">
+                            <img src="https://i.imgur.com/gfpeKj1.jpeg" alt="Dark Portal Defense" class="w-full md:w-1/3 rounded-md mb-4 md:mb-0">
+                            <div class="flex-1">
+                                <h3 class="font-header text-xl mb-3 text-wh-text-light">Dark Portal Defense 🛡️</h3>
+                                <p class="text-sm text-wh-text-medium">Periodically, a powerful Legion commander will attempt to reopen a secondary rift near the Dark Portal. Guilds must rally to defeat waves of demons and the final boss.</p>
+                            </div>
+                        </div>
+                        <div class="card p-4 md:flex gap-6 items-center">
+                             <img src="https://i.imgur.com/I4NaCOI.png" alt="Supply Caravan Skirmishes" class="w-full md:w-1/3 rounded-md mb-4 md:mb-0">
+                            <div class="flex-1">
+                                <h3 class="font-header text-xl mb-3 text-wh-text-light">Supply Caravan Skirmishes 📦</h3>
+                                <p class="text-sm text-wh-text-medium">NPC caravans carrying valuable "Badge Shipments" traverse contested zones. Guilds can sign up to either escort their faction's caravan or set up camps to raid the enemy's caravan. Success grants participants Badges of Justice and valuable crafting materials.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <footer class="bg-black py-8 border-t border-wh-border mt-16">
+        <div class="container mx-auto px-6 text-center text-wh-text-medium">
+            <p>&copy; 2025 Fel-Forged Legacy. An independent design proposal inspired by World of Warcraft: The Burning Crusade.</p>
+        </div>
+    </footer>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const reportData = {
+        accord: {
+            pointsPerLevel: 1,
+            maxPoints: 30, // Increased max points for new talents
+            trees: [
+                {
+                    name: "Path of Conquest",
+                    treeIcon: "https://wow.zamimg.com/images/wow/icons/large/ability_warrior_rampage.jpg",
+                    talents: [
+                        { id: 't1_1', row: 1, col: 2, icon: 'https://wow.zamimg.com/images/wow/icons/large/ability_warrior_defensivestance.jpg', name: 'Battle-Hardened', maxRank: 5, req: 0, desc: "Reduces gear durability damage taken by guild members in raids by {V}%", values: [2,4,6,8,10] },
+                        { id: 't1_2', row: 1, col: 3, icon: 'https://wow.zamimg.com/images/wow/icons/large/ability_rogue_sprint.jpg', name: 'Seasoned Skirmishers', maxRank: 5, req: 0, desc: "Increases Honor gained from all sources by {V}%", values: [1,2,3,4,5] },
+                        { id: 't1_3', row: 2, col: 1, icon: 'https://wow.zamimg.com/images/wow/icons/large/spell_shadow_unholyfrenzy.jpg', name: 'Demonslayer', maxRank: 3, req: 5, dependsOn: 't1_1', desc: "Increases damage dealt to Demons in Outland by {V}% for all guild members.", values: [1, 2, 3] },
+                        { id: 't1_4', row: 2, col: 2, icon: 'https://wow.zamimg.com/images/wow/icons/large/inv_gizmo_02.jpg', name: 'Efficient Sieging', maxRank: 2, req: 5, dependsOn: 't1_1', desc: "Reduces the cost of crafted Fortification Kits by {V}%", values: [10, 20] },
+                        { id: 't1_5', row: 2, col: 4, icon: 'https://wow.zamimg.com/images/wow/icons/large/inv_potion_107.jpg', name: 'Alchemical Acumen', maxRank: 2, req: 5, dependsOn: 't1_2', desc: "Increases the duration of flasks and elixirs used in raids by {V}%.", values: [10, 20] },
+                        { id: 't1_6', row: 3, col: 2, icon: 'https://wow.zamimg.com/images/wow/icons/large/inv_banner_02.jpg', name: 'War Banner: Fury', maxRank: 1, req: 10, dependsOn: 't1_4', desc: "Unlocks a legendary War Banner recipe. Grants a 15% damage increase to nearby guild members in Outland for 1 hour (3-day cooldown)." },
+                        { id: 't1_7', row: 3, col: 3, icon: 'https://wow.zamimg.com/images/wow/icons/large/inv_jewelcrafting_gem_39.jpg', name: 'Attuned Shards', maxRank: 3, req: 10, dependsOn: 't1_2', desc: "Increases the drop chance of Attuned Shards from raid bosses by {V}%", values: [15, 30, 50] },
+                        { id: 't1_8', row: 4, col: 3, icon: 'https://wow.zamimg.com/images/wow/icons/large/ability_rogue_deadliness.jpg', name: 'Elite: Relentless Assault', maxRank: 1, req: 15, dependsOn: 't1_7', isElite: true, desc: "Path of the Few Only. Your GvG team starts with a 10% damage buff for the first 2 minutes of a Proving Grounds match." },
+                        { id: 't1_9', row: 5, col: 2, icon: 'https://wow.zamimg.com/images/wow/icons/large/spell_holy_blessingofstrength.jpg', name: 'Might of the Guild', maxRank: 1, req: 20, dependsOn: 't1_6', desc: "All guild members gain a passive 1% increase to Strength, Agility, and Intellect." }
+                    ]
+                },
+                {
+                    name: "Path of Prosperity",
+                    treeIcon: "https://wow.zamimg.com/images/wow/icons/large/inv_misc_coin_01.jpg",
+                    talents: [
+                        { id: 't2_1', row: 1, col: 2, icon: 'https://wow.zamimg.com/images/wow/icons/large/inv_misc_coin_02.jpg', name: 'Expedient Exchange', maxRank: 5, req: 0, desc: "Reduces the Auction House cut for all guild members by {V}% of the total cut.", values: [5,10,15,20,25] },
+                        { id: 't2_2', row: 1, col: 3, icon: 'https://wow.zamimg.com/images/wow/icons/large/spell_nature_rejuvenation.jpg', name: 'Bountiful Harvest', maxRank: 5, req: 0, desc: "Increases the yield from Sanctum-specific gathering nodes by {V}%", values: [5,10,15,20,25] },
+                        { id: 't2_3', row: 2, col: 1, icon: 'https://wow.zamimg.com/images/wow/icons/large/inv_misc_wrench_01.jpg', name: 'Expert Repairs', maxRank: 3, req: 5, dependsOn: 't2_1', desc: "Reduces the cost of gear repairs from all vendors by {V}%.", values: [5, 10, 15] },
+                        { id: 't2_4', row: 2, col: 2, icon: 'https://wow.zamimg.com/images/wow/icons/large/inv_scroll_03.jpg', name: 'Shared Schematics', maxRank: 1, req: 5, dependsOn: 't2_1', desc: "Unlocks a Guild Recipe Book, allowing members to scribe rare BoP recipes for others to use." },
+                        { id: 't2_5', row: 2, col: 4, icon: 'https://wow.zamimg.com/images/wow/icons/large/trade_engineering.jpg', name: 'Master Artificers', maxRank: 3, req: 5, dependsOn: 't2_2', desc: "Reduces the material cost of all Artificer crafts by {V}%", values: [5,10,15] },
+                        { id: 't2_6', row: 3, col: 2, icon: 'https://wow.zamimg.com/images/wow/icons/large/inv_box_01.jpg', name: 'The Golden Caravan', maxRank: 1, req: 10, dependsOn: 't2_4', desc: "Unlocks the weekly Golden Caravan, allowing the guild to sell crafted goods directly to the public in a major city." },
+                        { id: 't2_7', row: 3, col: 3, icon: 'https://wow.zamimg.com/images/wow/icons/large/spell_holy_sealofwisdom.jpg', name: 'Inspired Crafting', maxRank: 3, req: 10, dependsOn: 't2_5', desc: "Grants a {V}% chance when crafting armor or weapons to create a superior version with slightly increased stats.", values: [1, 2, 3] },
+                        { id: 't2_8', row: 4, col: 2, icon: 'https://wow.zamimg.com/images/wow/icons/large/inv_elemental_primal_mana.jpg', name: 'Elite: Aetherium Experts', maxRank: 1, req: 15, dependsOn: 't2_6', isElite: true, desc: "Path of the Few Only. The daily Aetherium Surge generates 25% more Aetherium for the same resource cost." },
+                        { id: 't2_9', row: 5, col: 3, icon: 'https://wow.zamimg.com/images/wow/icons/large/inv_misc_bag_10.jpg', name: 'Guild Treasury', maxRank: 1, req: 20, dependsOn: 't2_7', desc: "Passively generates 100 gold for the guild bank each week for each active member." }
+                    ]
+                },
+                {
+                    name: "Path of Dominion",
+                    treeIcon: "https://wow.zamimg.com/images/wow/icons/large/spell_holy_prayerofhealing.jpg",
+                    talents: [
+                        { id: 't3_1', row: 1, col: 2, icon: 'https://wow.zamimg.com/images/wow/icons/large/spell_holy_sealofprotection.jpg', name: 'Fortification', maxRank: 5, req: 0, desc: "Increases the health of all guild-built defensive structures in controlled territories by {V}%", values: [5,10,15,20,25] },
+                        { id: 't3_2', row: 1, col: 3, icon: 'https://wow.zamimg.com/images/wow/icons/large/inv_misc_rune_06.jpg', name: 'Rapid Deployment', maxRank: 5, req: 0, desc: "Reduces the cooldown of the guild's Sanctum hearthstone by {V} minutes.", values: [6, 12, 18, 24, 30] },
+                        { id: 't3_3', row: 2, col: 1, icon: 'https://wow.zamimg.com/images/wow/icons/large/spell_nature_spiritwolf.jpg', name: 'Vigilance', maxRank: 3, req: 5, dependsOn: 't3_1', desc: "Increases the respawn rate of NPC guards in controlled territories by {V}%.", values: [10, 20, 30] },
+                        { id: 't3_4', row: 2, col: 2, icon: 'https://wow.zamimg.com/images/wow/icons/large/spell_shadow_scourgebuild.jpg', name: 'Territorial Watch', maxRank: 2, req: 5, dependsOn: 't3_1', desc: "NPC Guards in controlled territories have a {V}% chance to briefly stun attackers.", values: [5, 10] },
+                        { id: 't3_5', row: 2, col: 4, icon: 'https://wow.zamimg.com/images/wow/icons/large/spell_holy_sealofrighteousness.jpg', name: 'United Front', maxRank: 1, req: 5, dependsOn: 't3_2', desc: "Unlocks the Alliance system, allowing formal political alliances with up to two other guilds." },
+                        { id: 't3_6', row: 3, col: 3, icon: 'https://wow.zamimg.com/images/wow/icons/large/inv_relics_libramofgrace.jpg', name: 'Relic Hunters', maxRank: 3, req: 10, dependsOn: 't3_5', desc: "Reduces the movement speed penalty of carrying an enemy Relic by {V}%", values: [10, 15, 25] },
+                        { id: 't3_7', row: 4, col: 2, icon: 'https://wow.zamimg.com/images/wow/icons/large/ability_rogue_duel.jpg', name: 'Declaration of Rivalry', maxRank: 1, req: 15, dependsOn: 't3_4', desc: "Allows guild leadership to declare a Rivalry with another guild, granting 10% bonus honor for killing their members." },
+                        { id: 't3_8', row: 4, col: 3, icon: 'https://wow.zamimg.com/images/wow/icons/large/spell_holy_devotionaura.jpg', name: 'Elite: Unbreakable Will', maxRank: 1, req: 15, dependsOn: 't3_6', isElite: true, desc: "Path of the Few Only. When defending a captured Relic in your Sanctum, all guild members inside gain 10% increased health." },
+                        { id: 't3_9', row: 5, col: 2, icon: 'https://wow.zamimg.com/images/wow/icons/large/spell_shadow_auraofdarkness.jpg', name: 'Sphere of Influence', maxRank: 1, req: 20, dependsOn: 't3_7', desc: "All guild members gain a 5% movement speed increase while in any guild-controlled territory." }
+                    ]
+                }
+            ]
+        },
+        war: {
+            'relic-raids': {
+                image: 'https://i.imgur.com/FfMp20H.png',
+                title: 'Relic Raids: The Hunt for Ultimate Power 🏆',
+                description: 'A direct homage to Dark Age of Camelot, guilds must steal a powerful enemy relic, granting a server-wide buff if successfully brought back to their Sanctum. The relic carrier is slowed and marked on the world map, triggering an epic, cross-continental chase.',
+                details: [
+                    { heading: 'The Relics of Power', text: 'Six relics exist: The Heart of Fury, The Aegis of Kings, and The Eye of Wisdom for each faction. Capturing an enemy relic grants a faction-wide buff (e.g., Heart of Fury grants +3% physical damage). Stacking multiple relics can turn the tide of the war.' },
+                    { heading: 'The Heist', text: 'Relics are kept in non-instanced, high-level zones like the Black Temple antechamber or deep within Tempest Keep. The chambers are filled with elite guards and environmental hazards that require a full raid to overcome.' },
+                    { heading: 'The Chase', text: 'The relic carrier is slowed by 50% and cannot mount. Their location is broadcast to the entire server. If killed, the relic is dropped, and can be picked up by anyone, friend or foe, restarting the chase.' }
+                ]
+            },
+            'territory-control': {
+                image: 'https://i.imgur.com/qMQLRQo.jpeg',
+                title: 'Halaa Control: Carving out an Empire 🗺️',
+                description: 'Key strategic zones across Outland become claimable. Guilds battle for control during a daily "Prime Time" window, focusing conflict into intense, predictable periods. Ownership provides significant advantages.',
+                details: [
+                    { heading: 'Contestable Zones', text: 'Halaa, the Spirit Towers of Terokkar, the Apexis Shrines in Blade\'s Edge, and the Elemental Plateau are all claimable. Each provides unique resources or vendor access.' },
+                    { heading: 'Prime Time Warfare', text: 'Each territory has a daily 3-hour "Prime Time" when it can be attacked. An attacking guild must declare their intent beforehand, giving the defenders time to prepare for a massive Zerg vs. Zerg battle.' },
+                    { heading: 'Building an Empire', text: 'Owners can spend resources to build fortifications: reinforcing walls, adding Arcane Turrets, and hiring elite NPC guards, making their territory progressively harder to capture.' }
+                ]
+            },
+            'proving-grounds': {
+                image: 'https://i.imgur.com/f5dQJ1u.jpeg',
+                title: 'The Proving Grounds: The Art of War ⚖️',
+                description: 'A formal, instanced 10v10 GvG system for pure, skill-based competition. Drawing inspiration from Guild Wars 1, the goal is to assassinate the enemy\'s NPC "Guild Lord." A seasonal ladder offers prestigious, exclusive cosmetic rewards.',
+                details: [
+                    { heading: 'Strategic Combat', text: 'The map is a three-lane arena with secondary objectives that grant buffs. Victory requires more than brute force; it demands strategy, coordination, and timing.' },
+                    { heading: 'The Guild Lord', text: 'Each base is protected by a powerful NPC Lord. Teams must break through enemy lines to expose and defeat the Lord while protecting their own.' },
+                    { heading: 'Seasonal Glory', text: 'A ranked ladder tracks guild performance. Top guilds at the end of a season earn exclusive rewards: unique tabard designs, character titles (e.g., "Season 1 Gladiator"), and special cosmetic auras for their Sanctum.' }
+                ]
+            }
+        }
+    };
+
+    // Accord Talent Calculator
+    const talentCalcContainer = document.getElementById('talent-calculator');
+    let pointsSpent = 0;
+    const maxPoints = reportData.accord.maxPoints;
+    let talentRanks = {};
+
+    function renderTalentTrees() {
+        talentCalcContainer.innerHTML = `
+            <div class="flex justify-between items-center mb-6 text-white">
+                <h3 class="font-header text-xl text-wh-gold-highlight">Guild Accord</h3>
+                <div class="text-right">
+                    <p class="text-lg font-sans">Points Spent: <span id="points-spent">${pointsSpent}</span> / ${maxPoints}</p>
+                    <button id="reset-talents" class="text-sm text-wh-text-medium hover:text-white underline font-sans">Reset</button>
+                </div>
+            </div>
+            <div class="md:flex md:space-x-8">
+                ${reportData.accord.trees.map(tree => `
+                    <div class="flex-1 mb-8 md:mb-0">
+                        <div class="flex items-center mb-4 p-2 bg-black/20 rounded-md">
+                            <img src="${tree.treeIcon}" class="w-10 h-10 mr-4 rounded">
+                            <h4 class="font-header text-lg text-white">${tree.name}</h4>
+                        </div>
+                        <div class="talent-tree" id="tree-${tree.name.replace(/\s+/g, '')}">
+                            <!-- Talents injected here -->
+                        </div>
+                    </div>
+                `).join('')}
+            </div>
+        `;
+        
+        reportData.accord.trees.forEach(treeData => {
+            const treeContainer = document.getElementById(`tree-${treeData.name.replace(/\s+/g, '')}`);
+            treeData.talents.forEach(talent => {
+                const talentDiv = document.createElement('div');
+                talentDiv.style.gridColumn = talent.col;
+                talentDiv.style.gridRow = talent.row;
+                talentDiv.className = 'talent-icon locked';
+                talentDiv.dataset.id = talent.id;
+                talentDiv.style.backgroundImage = `url('${talent.icon}')`;
+                
+                const rank = talentRanks[talent.id] || 0;
+                
+                talentDiv.innerHTML = `
+                    <div class="talent-rank">${rank}/${talent.maxRank}</div>
+                    <div class="tooltip">
+                        <p class="tooltip-title">${talent.name}</p>
+                        <p class="tooltip-rank">Rank ${rank}/${talent.maxRank}</p>
+                        <p class="text-sm mt-2"></p>
+                        <p class="tooltip-next-rank mt-2 hidden"></p>
+                        <p class="tooltip-req mt-2 hidden"></p>
+                    </div>
+                `;
+                
+                talentDiv.addEventListener('click', () => spendPoint(talent.id));
+                treeContainer.appendChild(talentDiv);
+            });
+            
+            setTimeout(() => {
+                treeContainer.querySelectorAll('.talent-connector').forEach(c => c.remove());
+                treeData.talents.forEach(talent => {
+                    if (talent.dependsOn) {
+                        const childElement = treeContainer.querySelector(`[data-id='${talent.id}']`);
+                        const parentElement = treeContainer.querySelector(`[data-id='${talent.dependsOn}']`);
+                        if (childElement && parentElement) {
+                            const parentRect = parentElement.getBoundingClientRect();
+                            const childRect = childElement.getBoundingClientRect();
+                            const containerRect = treeContainer.getBoundingClientRect();
+                            
+                            const iconRadius = parentRect.width / 2;
+
+                            const pX = parentRect.left + parentRect.width / 2 - containerRect.left;
+                            const pY = parentRect.top + parentRect.height / 2 - containerRect.top;
+                            const cX = childRect.left + childRect.width / 2 - containerRect.left;
+                            const cY = childRect.top + childRect.height / 2 - containerRect.top;
+
+                            const dX = cX - pX;
+                            const dY = cY - pY;
+                            
+                            const length = Math.hypot(dX, dY);
+                            const angle = Math.atan2(dY, dX);
+
+                            const startX = pX + iconRadius * Math.cos(angle);
+                            const startY = pY + iconRadius * Math.sin(angle);
+                            const newLength = length - (iconRadius * 2);
+
+                            if (newLength > 0) {
+                                const connector = document.createElement('div');
+                                connector.className = 'talent-connector';
+                                connector.style.position = 'absolute';
+                                connector.style.width = `${newLength}px`;
+                                connector.style.height = '3px';
+                                connector.style.left = `${startX}px`;
+                                connector.style.top = `${startY}px`;
+                                connector.style.transformOrigin = '0 0';
+                                connector.style.transform = `rotate(${angle * 180 / Math.PI}deg)`;
+                                
+                                treeContainer.insertBefore(connector, treeContainer.firstChild);
+                            }
+                        }
+                    }
+                });
+            }, 0);
+        });
+        
+        document.getElementById('reset-talents').addEventListener('click', resetTalents);
+        updateTalentStates();
+    }
+    
+    function spendPoint(talentId) {
+        const talent = findTalentById(talentId);
+        const rank = talentRanks[talentId] || 0;
+        
+        if (pointsSpent < maxPoints && rank < talent.maxRank && isTalentAvailable(talent)) {
+            pointsSpent++;
+            talentRanks[talentId] = (talentRanks[talentId] || 0) + 1;
+            updateTalentStates();
+        }
+    }
+    
+    function resetTalents() {
+        pointsSpent = 0;
+        talentRanks = {};
+        renderTalentTrees();
+    }
+
+    function findTalentById(id) {
+        for (const tree of reportData.accord.trees) {
+            for (const talent of tree.talents) {
+                if (talent.id === id) return talent;
+            }
+        }
+        return null;
+    }
+    
+    function getPointsInTree(treeName) {
+        const tree = reportData.accord.trees.find(t => t.name === treeName);
+        if (!tree) return 0;
+        return tree.talents.reduce((acc, t) => acc + (talentRanks[t.id] || 0), 0);
+    }
+
+    function isTalentAvailable(talent) {
+        const treeData = reportData.accord.trees.find(tree => tree.talents.some(t => t.id === talent.id));
+        if (!treeData) return false;
+        const pointsInThisTree = getPointsInTree(treeData.name);
+        if (pointsInThisTree < talent.req) return false;
+        if (talent.dependsOn) {
+            const dep = findTalentById(talent.dependsOn);
+            if (!dep || (talentRanks[talent.dependsOn] || 0) < dep.maxRank) return false;
+        }
+        return true;
+    }
+
+    function updateTalentStates() {
+        document.getElementById('points-spent').textContent = pointsSpent;
+        document.querySelectorAll('.talent-icon').forEach(div => {
+            const id = div.dataset.id;
+            const talent = findTalentById(id);
+            if (!talent) return;
+            const rank = talentRanks[id] || 0;
+            const available = isTalentAvailable(talent);
+
+            div.classList.toggle('locked', !available && rank === 0);
+            div.classList.toggle('available', available && rank < talent.maxRank);
+            div.classList.toggle('maxed', rank === talent.maxRank);
+            
+            const tooltipReq = div.querySelector('.tooltip-req');
+            if (rank === 0 && !available) {
+                tooltipReq.classList.remove('hidden');
+                const treeData = reportData.accord.trees.find(tree => tree.talents.some(t => t.id === talent.id));
+                let reqText = `Requires ${talent.req} points in ${treeData.name}`;
+                if (talent.dependsOn) {
+                     const depTalent = findTalentById(talent.dependsOn);
+                     if (depTalent) {
+                        reqText += ` and max rank in ${depTalent.name}`;
+                     }
+                }
+                tooltipReq.textContent = reqText;
+            } else {
+                tooltipReq.classList.add('hidden');
+            }
+
+            div.querySelector('.talent-rank').textContent = `${rank}/${talent.maxRank}`;
+            
+            const tooltipDesc = div.querySelector('.tooltip .text-sm');
+            const tooltipNext = div.querySelector('.tooltip-next-rank');
+
+            if (talent.values) {
+                tooltipDesc.textContent = talent.desc.replace('{V}', talent.values[rank - 1] || '...');
+            } else {
+                tooltipDesc.textContent = talent.desc;
+            }
+
+            if (tooltipNext) {
+                if (rank < talent.maxRank) {
+                    tooltipNext.classList.remove('hidden');
+                    if (talent.values) {
+                        tooltipNext.textContent = `Next rank: ${talent.desc.replace('{V}', talent.values[rank] || '...')}`;
+                    } else {
+                         tooltipNext.classList.add('hidden');
+                    }
+                } else {
+                    tooltipNext.classList.add('hidden');
+                }
+            }
+        });
+    }
+
+    renderTalentTrees();
+
+    // War Section Logic
+    const warTabs = document.querySelectorAll('#war .tab-button');
+    const warContentContainer = document.getElementById('war-content-container');
+    function displayWarContent(tabId) {
+        const content = reportData.war[tabId];
+        if (!content) return;
+        warContentContainer.innerHTML = `
+            <img src="${content.image}" alt="${content.title}" class="w-full rounded-md shadow-lg mb-6">
+            <h3 class="font-header text-2xl md:text-3xl font-bold mb-4 text-wh-text-light">${content.title}</h3>
+            <p class="text-wh-text-medium mb-6">${content.description}</p>
+            <div class="space-y-4 border-t border-wh-border pt-6">
+                ${content.details.map(detail => `
+                    <div>
+                        <h4 class="font-header text-lg text-wh-blue-link">${detail.heading}</h4>
+                        <p class="text-wh-text-medium">${detail.text}</p>
+                    </div>
+                `).join('')}
+            </div>`;
+    }
+    warTabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            warTabs.forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+            displayWarContent(tab.dataset.tab);
+        });
+    });
+    displayWarContent('relic-raids');
+
+    // Active Nav Link Scrolling
+    const sections = document.querySelectorAll('main section[id]');
+    const navLinks = document.querySelectorAll('.sub-nav a');
+
+    window.addEventListener('scroll', () => {
+        let current = '';
+        sections.forEach(section => {
+            const sectionTop = section.offsetTop;
+            if (pageYOffset >= sectionTop - 150) { // Offset for sticky headers
+                current = section.getAttribute('id');
+            }
+        });
+
+        navLinks.forEach(link => {
+            link.classList.remove('active');
+            if (link.getAttribute('href').substring(1) === current) {
+                link.classList.add('active');
+            }
+        });
+    });
+});
+</script>
+
+</body>
+</html>
